@@ -432,9 +432,13 @@ BuildRequires:	flex
 BuildRequires:	bison
 BuildRequires:	binutils
 BuildRequires:	hostname
+%if %{with clang}
+BuildRequires:	clang
+%else
 BuildRequires:	gcc >= 7.2.1_2017.11-3
 BuildRequires:	gcc-plugin-devel >= 7.2.1_2017.11-3
 BuildRequires:	gcc-c++ >= 7.2.1_2017.11-3
+%endif
 BuildRequires:	pkgconfig(libssl)
 BuildRequires:	diffutils
 # For git apply
@@ -1031,13 +1035,13 @@ BuildKernel() {
 # (tpg) build with gcc, as kernel is not yet ready for LLVM/clang
 %ifarch %{x86_64}
 %if %{with clang}
-    %kmake all CC=clang CXX=clang++ CFLAGS="$CFLAGS -flto"
+    %kmake all CC=clang CXX=clang++ CFLAGS="$CFLAGS -flto -Qunused-arguments"
 %else
     %kmake all CC=gcc CXX=g++ CFLAGS="$CFLAGS -flto"
 %endif
 %else
 %if %{with clang}
-    %kmake all CC=clang CXX=clang++ CFLAGS="$CFLAGS"
+    %kmake all CC=clang CXX=clang++ CFLAGS="$CFLAGS -Qunused-arguments"
 %else
     %kmake all CC=gcc CXX=g++ CFLAGS="$CFLAGS"
 %endif
