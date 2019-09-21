@@ -75,7 +75,7 @@
 %bcond_without build_source
 %bcond_without build_devel
 %bcond_with build_debug
-%bcond_with clang
+%bcond_without clang
 %bcond_with bootsplash
 # (tpg) enable patches from ClearLinux
 %bcond_without clr
@@ -230,42 +230,6 @@ Patch3:		0001-Add-support-for-Acer-Predator-macro-keys.patch
 Patch4:		linux-4.7-intel-dvi-duallink.patch
 Patch5:		linux-4.8.1-buildfix.patch
 Patch6:		linux-5.2.9-riscv-compile.patch
-
-%if %{with clang}
-# Patches to make it build with clang
-Patch1000:	0001-kbuild-LLVMLinux-Set-compiler-flags-for-clang.patch
-Patch1001:	0002-fs-LLVMLinux-Remove-warning-from-COMPATIBLE_IOCTL.patch
-Patch1002:	0003-kbuild-LLVMLinux-Add-support-for-generating-LLVM-bit.patch
-Patch1003:	0004-kbuild-LLVMLinux-Make-asm-offset-generation-work-wit.patch
-Patch1004:	0005-md-sysfs-LLVMLinux-Remove-nested-function-from-bcach.patch
-Patch1005:	0006-apparmor-LLVMLinux-Remove-VLAIS.patch
-Patch1006:	0007-exofs-LLVMLinux-Remove-VLAIS-from-exofs-FIXME-Check-.patch
-Patch1007:	0008-md-raid10-LLVMLinux-Remove-VLAIS-from-raid10-driver.patch
-Patch1008:	0009-fs-nfs-LLVMLinux-Remove-VLAIS-from-nfs.patch
-Patch1009:	0010-net-wimax-i2400-LLVMLinux-Remove-VLAIS-from-wimax-i2.patch
-Patch1010:	0011-Kbuild-LLVMLinux-Use-Oz-instead-of-Os-when-using-cla.patch
-Patch1011:	0012-WORKAROUND-x86-boot-LLVMLinux-Work-around-clang-PR39.patch
-Patch1012:	0013-DO-NOT-UPSTREAM-xen-LLVMLinux-Remove-VLAIS-from-xen-.patch
-Patch1013:	0014-DO-NOT-UPSTREAM-arm-LLVMLinux-Provide-__aeabi_-symbo.patch
-Patch1014:	0015-DO-NOT-UPSTREAM-arm-firmware-LLVMLinux-replace-naked.patch
-Patch1015:	0016-arm-LLVMLinux-Remove-unreachable-from-naked-function.patch
-Patch1016:	0017-MIPS-LLVMLinux-Fix-a-cast-to-type-not-present-in-uni.patch
-Patch1017:	0018-MIPS-LLVMLinux-Fix-an-inline-asm-input-output-type-m.patch
-Patch1018:	0019-MIPS-LLVMLinux-Silence-variable-self-assignment-warn.patch
-Patch1019:	0020-MIPS-LLVMLinux-Silence-unicode-warnings-when-preproc.patch
-Patch1020:	0021-Don-t-use-attributes-error-and-warning-with-clang.patch
-Patch1021:	0022-Fix-undefined-references-to-acpi_idle_driver-on-aarc.patch
-Patch1022:	0023-HACK-firmware-LLVMLinux-fix-EFI-libstub-with-clang.patch
-Patch1023:	0024-aarch64-crypto-LLVMLinux-Fix-inline-assembly-for-cla.patch
-Patch1024:	0025-aarch64-LLVMLinux-Make-spin_lock_prefetch-asm-code-c.patch
-Patch1025:	0026-LLVMLinux-Don-t-use-attribute-externally_visible-whe.patch
-Patch1026:	0027-x86-crypto-LLVMLinux-Fix-building-x86_64-AES-extensi.patch
-Patch1027:	0028-x86-LLVMLinux-Qualify-mul-as-mulq-to-make-clang-happ.patch
-Patch1028:	0029-kbuild-LLVMLinux-Add-Werror-to-cc-option-in-order-to.patch
-Patch1029:	0030-x86-kbuild-LLVMLinux-Check-for-compiler-support-of-f.patch
-#Patch1030:	0031-x86-cmpxchg-break.patch
-Patch1031:	0001-Fix-for-compilation-with-clang.patch
-%endif
 
 # Bootsplash system
 # (tpg) disable it for now 2018-11-07
