@@ -1037,13 +1037,13 @@ BuildKernel() {
 # (tpg) build with gcc, as kernel is not yet ready for LLVM/clang
 %ifarch %{x86_64}
 %if %{with clang}
-    %kmake all HOSTCC=clang CC=clang CXX=clang++ CFLAGS="$CFLAGS -flto -Qunused-arguments" OBJCOPY=llvm-objcopy AR=llvm-ar NM=llvm-nm STRIP=llvm-strip OBJDUMP=llvm-objdump HOSTAR=llvm-a LD=ld.lld HOSTLD=ld.lld
+    %kmake all HOSTCC=clang CC=clang CXX=clang++ CFLAGS="$CFLAGS -flto -Qunused-arguments" OBJCOPY=llvm-objcopy AR=llvm-ar NM=llvm-nm STRIP=llvm-strip OBJDUMP=llvm-objdump HOSTAR=llvm-ar LD=ld.lld HOSTLD=ld.lld
 %else
     %kmake all CC=gcc CXX=g++ CFLAGS="$CFLAGS -flto"
 %endif
 %else
 %if %{with clang}
-    %kmake all HOSTCC=clang CC=clang CXX=clang++ CFLAGS="$CFLAGS -Qunused-arguments" OBJCOPY=llvm-objcopy AR=llvm-ar NM=llvm-nm STRIP=llvm-strip OBJDUMP=llvm-objdump HOSTAR=llvm-a LD=ld.lld HOSTLD=ld.lld
+    %kmake all HOSTCC=clang CC=clang CXX=clang++ CFLAGS="$CFLAGS -Qunused-arguments" OBJCOPY=llvm-objcopy AR=llvm-ar NM=llvm-nm STRIP=llvm-strip OBJDUMP=llvm-objdump HOSTAR=llvm-ar LD=ld.lld HOSTLD=ld.lld
 %else
     %kmake all CC=gcc CXX=g++ CFLAGS="$CFLAGS"
 %endif
