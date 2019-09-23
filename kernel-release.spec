@@ -947,11 +947,6 @@ chmod 755 tools/objtool/sync-check.sh
 
 %build
 %setup_compile_flags
-############################################################
-### Linker start2 > Check point to build for omv or rosa ###
-############################################################
-# Make sure we don't use gold
-export LD="%{_target_platform}-ld.bfd"
 export PYTHON=%{__python2}
 
 ############################################################
