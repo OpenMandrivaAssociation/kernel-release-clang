@@ -364,13 +364,12 @@ Patch407:	0114-smpboot-reuse-timer-calibration.patch
 %endif
 Patch408:	0109-raid6-add-Kconfig-option-to-skip-raid6-benchmarking.patch
 Patch409:	0116-Initialize-ata-before-graphics.patch
-Patch410:	0111-reduce-e1000e-boot-time-by-tightening-sleep-ranges.patch
-Patch411:	0119-e1000e-change-default-policy.patch
-Patch412:	0112-give-rdrand-some-credit.patch
-Patch413:	0120-ipv4-tcp-allow-the-memory-tuning-for-tcp-to-go-a-lit.patch
-Patch414:	0124-kernel-time-reduce-ntp-wakeups.patch
-Patch415:	0125-init-wait-for-partition-and-retry-scan.patch
-Patch416:	0120-Migrate-some-systemd-defaults-to-the-kernel-defaults.patch
+Patch410:	0119-e1000e-change-default-policy.patch
+Patch411:	0112-give-rdrand-some-credit.patch
+Patch412:	0120-ipv4-tcp-allow-the-memory-tuning-for-tcp-to-go-a-lit.patch
+Patch413:	0124-kernel-time-reduce-ntp-wakeups.patch
+Patch414:	0125-init-wait-for-partition-and-retry-scan.patch
+Patch415:	0120-Migrate-some-systemd-defaults-to-the-kernel-defaults.patch
 %endif
 
 # (crazy) see: https://forum.openmandriva.org/t/nvme-ssd-m2-not-seen-by-omlx-4-0/2407
