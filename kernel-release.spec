@@ -118,6 +118,18 @@
 # cpupower is currently x86 only
 %bcond_with build_cpupower
 %endif
+# (tpg) Virtualbox module makes sens only on ix86 and x86_64
+# 2019-09-23
+# BUILDSTDERR: In file included from drivers/net/vboxnetadp/linux/VBoxNetAdp-linux.c:31:
+# BUILDSTDERR: drivers/net/vboxnetadp/r0drv/linux/the-linux-kernel.h:46:34: error: unknown warning group '-Wold-style-declaration', ignored [-Werror,-Wunknown-warning-option]
+# BUILDSTDERR: #  pragma GCC diagnostic ignored "-Wold-style-declaration" /* 2.6.18-411.0.0.0.1.el5/build/include/asm/apic.h:110: warning: 'inline' is not at beginning of declaration [-Wold-style-declaration] */
+# BUILDSTDERR:                                  ^
+# BUILDSTDERR: 1 error generated.
+%ifarch %{ix86} %{x86_64}
+%bcond_with virtualbox
+%else
+%bcond_with virtualbox
+%endif
 
 # (default) Enable support for Zstandard and compress modules with XZ
 # unfortunately kmod does not support Zstandard for now, so kernel modules
@@ -313,12 +325,14 @@ Patch147:	saa716x-linux-4.19.patch
 # NOT YET
 #Patch250:	4.14-C11.patch
 
+%if %{with virtualbox}
 # VirtualBox shared folders support
 # https://patchwork.kernel.org/patch/10906949/
 # For newer versions, check
 # https://patchwork.kernel.org/project/linux-fsdevel/list/?submitter=582
 Patch300:	v10-fs-Add-VirtualBox-guest-shared-folder-vboxsf-support.diff
 Source300:	virtualbox-kernel-5.3.patch
+%endif
 
 # Better support for newer x86 processors
 # Original patch:
@@ -496,11 +510,9 @@ Suggests:	microcode-intel
 # Let's pull in some of the most commonly used DKMS modules
 # so end users don't have to install compilers (and worse,
 # get compiler error messages on failures)
-%if %mdvver >= 3000000
-%ifarch %{ix86} %{x86_64}
+%if %{with virtualbox}
 BuildRequires:	virtualbox-kernel-module-sources
 BuildRequires:	virtualbox-guest-kernel-module-sources
-%endif
 %endif
 
 %description
@@ -876,8 +888,8 @@ find drivers/media/tuners drivers/media/dvb-frontends -name "*.c" -o -name "*.h"
 LC_ALL=C sed -i -e "s/^SUBLEVEL.*/SUBLEVEL = %{sublevel}/" Makefile
 
 # Pull in some externally maintained modules
-%if %mdvver >= 3000000
-%ifarch %{ix86} %{x86_64}
+
+%if %{with virtualbox}
 # === VirtualBox guest additions ===
 %define use_internal_vboxvideo 0
 %if ! 0%{use_internal_vboxvideo}
@@ -935,7 +947,6 @@ sed -i -e 's,\$(KBUILD_EXTMOD),drivers/pci/vboxpci,g' drivers/pci/vboxpci/Makefi
 sed -i -e "s,^KERN_DIR.*,KERN_DIR := $(pwd)," drivers/pci/vboxpci/Makefile*
 echo 'obj-m += vboxpci/' >>drivers/pci/Makefile
 patch -p1 -z .300a~ -b <%{S:300}
-%endif
 %endif
 
 # get rid of unwanted files
@@ -1033,13 +1044,13 @@ BuildKernel() {
 # (tpg) build with gcc, as kernel is not yet ready for LLVM/clang
 %ifarch %{x86_64}
 %if %{with clang}
-    %kmake all HOSTCC=clang HOSTCXX=clang++ CC=clang CXX=clang++ CFLAGS="$CFLAGS -flto -Qunused-arguments -Wunused-parameter" OBJCOPY=llvm-objcopy AR=llvm-ar NM=llvm-nm STRIP=llvm-strip OBJDUMP=llvm-objdump HOSTAR=llvm-ar LD=ld.lld HOSTLD=ld.lld
+    %kmake all HOSTCC=clang HOSTCXX=clang++ CC=clang CXX=clang++ CFLAGS="$CFLAGS -flto" OBJCOPY=llvm-objcopy AR=llvm-ar NM=llvm-nm STRIP=llvm-strip OBJDUMP=llvm-objdump HOSTAR=llvm-ar LD=ld.lld HOSTLD=ld.lld
 %else
     %kmake all CC=gcc CXX=g++ CFLAGS="$CFLAGS -flto"
 %endif
 %else
 %if %{with clang}
-    %kmake all HOSTCC=clang HOSTCXX=clang++ CC=clang CXX=clang++ CFLAGS="$CFLAGS -Qunused-arguments -Wunused-parameter" OBJCOPY=llvm-objcopy AR=llvm-ar NM=llvm-nm STRIP=llvm-strip OBJDUMP=llvm-objdump HOSTAR=llvm-ar LD=ld.lld HOSTLD=ld.lld
+    %kmake all HOSTCC=clang HOSTCXX=clang++ CC=clang CXX=clang++ CFLAGS="$CFLAGS" OBJCOPY=llvm-objcopy AR=llvm-ar NM=llvm-nm STRIP=llvm-strip OBJDUMP=llvm-objdump HOSTAR=llvm-ar LD=ld.lld HOSTLD=ld.lld
 %else
     %kmake all CC=gcc CXX=g++ CFLAGS="$CFLAGS"
 %endif
