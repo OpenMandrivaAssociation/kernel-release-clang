@@ -228,7 +228,7 @@ Source90:	https://cdn.kernel.org/pub/linux/kernel/v%(echo %{version}|cut -d. -f1
 Patch2:		die-floppy-die.patch
 Patch3:		0001-Add-support-for-Acer-Predator-macro-keys.patch
 Patch4:		linux-4.7-intel-dvi-duallink.patch
-Patch5:		linux-4.8.1-buildfix.patch
+#Patch5:		linux-4.8.1-buildfix.patch
 Patch6:		linux-5.2.9-riscv-compile.patch
 
 # Bootsplash system
@@ -1032,13 +1032,13 @@ BuildKernel() {
 # (tpg) build with gcc, as kernel is not yet ready for LLVM/clang
 %ifarch %{x86_64}
 %if %{with clang}
-    %kmake all HOSTCC=clang CC=clang CXX=clang++ CFLAGS="$CFLAGS -flto -Qunused-arguments" OBJCOPY=llvm-objcopy AR=llvm-ar NM=llvm-nm STRIP=llvm-strip OBJDUMP=llvm-objdump HOSTAR=llvm-ar LD=ld.lld HOSTLD=ld.lld
+    %kmake all HOSTCC=clang HOSTCXX=clang++ CC=clang CXX=clang++ CFLAGS="$CFLAGS -flto -Qunused-arguments" OBJCOPY=llvm-objcopy AR=llvm-ar NM=llvm-nm STRIP=llvm-strip OBJDUMP=llvm-objdump HOSTAR=llvm-ar LD=ld.lld HOSTLD=ld.lld
 %else
     %kmake all CC=gcc CXX=g++ CFLAGS="$CFLAGS -flto"
 %endif
 %else
 %if %{with clang}
-    %kmake all HOSTCC=clang CC=clang CXX=clang++ CFLAGS="$CFLAGS -Qunused-arguments" OBJCOPY=llvm-objcopy AR=llvm-ar NM=llvm-nm STRIP=llvm-strip OBJDUMP=llvm-objdump HOSTAR=llvm-ar LD=ld.lld HOSTLD=ld.lld
+    %kmake all HOSTCC=clang HOSTCXX=clang++ CC=clang CXX=clang++ CFLAGS="$CFLAGS -Qunused-arguments" OBJCOPY=llvm-objcopy AR=llvm-ar NM=llvm-nm STRIP=llvm-strip OBJDUMP=llvm-objdump HOSTAR=llvm-ar LD=ld.lld HOSTLD=ld.lld
 %else
     %kmake all CC=gcc CXX=g++ CFLAGS="$CFLAGS"
 %endif
