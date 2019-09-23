@@ -272,8 +272,7 @@ Source112:	RFC-v3-13-13-tools-bootsplash-Add-script-and-data-to-create-sample-fi
 # (tpg) http://kerneldedup.org/en/projects/uksm/download/
 # (tpg) sources can be found here https://github.com/dolohow/uksm
 %if %{with uksm}
-# brokes armx builds
-#Patch120:	https://raw.githubusercontent.com/dolohow/uksm/master/v5.x/uksm-5.2.patch
+Patch120:	https://raw.githubusercontent.com/dolohow/uksm/master/v5.x/uksm-5.2.patch
 # Sometimes other people are ahead of upstream porting to new releases...
 # No UKSM for 5.2-rc yet...
 #Patch120:	https://github.com/sirlucjan/kernel-patches/raw/master/5.1/uksm-pf/0001-uksm-5.1-initial-submission.patch
@@ -363,12 +362,15 @@ Patch406:	0110-fs-ext4-fsync-optimize-double-fsync-a-bunch.patch
 %ifarch %{ix86} %{x86_64}
 Patch407:	0114-smpboot-reuse-timer-calibration.patch
 %endif
-Patch408:	0116-Initialize-ata-before-graphics.patch
-Patch410:	0119-e1000e-change-default-policy.patch
-Patch411:	0112-give-rdrand-some-credit.patch
-Patch412:	0120-ipv4-tcp-allow-the-memory-tuning-for-tcp-to-go-a-lit.patch
-Patch415:	0124-kernel-time-reduce-ntp-wakeups.patch
-Patch416:	0125-init-wait-for-partition-and-retry-scan.patch
+Patch408:	0109-raid6-add-Kconfig-option-to-skip-raid6-benchmarking.patch
+Patch409:	0116-Initialize-ata-before-graphics.patch
+Patch410:	0111-reduce-e1000e-boot-time-by-tightening-sleep-ranges.patch
+Patch411:	0119-e1000e-change-default-policy.patch
+Patch412:	0112-give-rdrand-some-credit.patch
+Patch413:	0120-ipv4-tcp-allow-the-memory-tuning-for-tcp-to-go-a-lit.patch
+Patch414:	0124-kernel-time-reduce-ntp-wakeups.patch
+Patch415:	0125-init-wait-for-partition-and-retry-scan.patch
+Patch416:	0120-Migrate-some-systemd-defaults-to-the-kernel-defaults.patch
 %endif
 
 # (crazy) see: https://forum.openmandriva.org/t/nvme-ssd-m2-not-seen-by-omlx-4-0/2407
@@ -1032,13 +1034,13 @@ BuildKernel() {
 # (tpg) build with gcc, as kernel is not yet ready for LLVM/clang
 %ifarch %{x86_64}
 %if %{with clang}
-    %kmake all HOSTCC=clang HOSTCXX=clang++ CC=clang CXX=clang++ CFLAGS="$CFLAGS -flto -Qunused-arguments" OBJCOPY=llvm-objcopy AR=llvm-ar NM=llvm-nm STRIP=llvm-strip OBJDUMP=llvm-objdump HOSTAR=llvm-ar LD=ld.lld HOSTLD=ld.lld
+    %kmake all HOSTCC=clang HOSTCXX=clang++ CC=clang CXX=clang++ CFLAGS="$CFLAGS -flto -Qunused-arguments -Wunused-parameter" OBJCOPY=llvm-objcopy AR=llvm-ar NM=llvm-nm STRIP=llvm-strip OBJDUMP=llvm-objdump HOSTAR=llvm-ar LD=ld.lld HOSTLD=ld.lld
 %else
     %kmake all CC=gcc CXX=g++ CFLAGS="$CFLAGS -flto"
 %endif
 %else
 %if %{with clang}
-    %kmake all HOSTCC=clang HOSTCXX=clang++ CC=clang CXX=clang++ CFLAGS="$CFLAGS -Qunused-arguments" OBJCOPY=llvm-objcopy AR=llvm-ar NM=llvm-nm STRIP=llvm-strip OBJDUMP=llvm-objdump HOSTAR=llvm-ar LD=ld.lld HOSTLD=ld.lld
+    %kmake all HOSTCC=clang HOSTCXX=clang++ CC=clang CXX=clang++ CFLAGS="$CFLAGS -Qunused-arguments -Wunused-parameter" OBJCOPY=llvm-objcopy AR=llvm-ar NM=llvm-nm STRIP=llvm-strip OBJDUMP=llvm-objdump HOSTAR=llvm-ar LD=ld.lld HOSTLD=ld.lld
 %else
     %kmake all CC=gcc CXX=g++ CFLAGS="$CFLAGS"
 %endif
