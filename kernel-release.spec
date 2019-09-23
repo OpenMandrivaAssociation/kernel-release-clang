@@ -386,8 +386,8 @@ Patch802:	https://gitweb.frugalware.org/wip_kernel/raw/23f5e50042768b823e1861315
 # (bero) And make it compatible with modular binder
 #Patch804:	MuQSS-export-can_nice-for-binder.patch
 # (crazy) XPG 8200 Pro NVME 512GB ( pending upstream for 5.4 )
-Patch805:    Fix-booting-with-ADATA-XPG-SX8200-Pro-512GB.patch
-
+Patch805:	Fix-booting-with-ADATA-XPG-SX8200-Pro-512GB.patch
+Patch806:	kernel-5.3.1-objtool-Clobber-user-CFLAGS-variable.patch
 # Defines for the things that are needed for all the kernels
 #
 %define common_desc_kernel The kernel package contains the Linux kernel (vmlinuz), the core of your \
@@ -400,24 +400,24 @@ very current hardware.
 ### Global Requires/Provides
 # do not require dracut, please it bloats dockers and other minimal instllations
 # better solution needs to be figured out
-%define requires2	dracut >= 047
-%define requires3	kmod >= 25
-%define requires4	sysfsutils >=  2.1.0-12
-%define requires5	kernel-firmware
+%define requires2 dracut >= 047
+%define requires3 kmod >= 25
+%define requires4 sysfsutils >=  2.1.0-12
+%define requires5 kernel-firmware
 
-%define kprovides1	%{kname} = %{kverrel}
-%define kprovides2	kernel = %{tar_ver}
-%define kprovides_server	drbd-api = 88
+%define kprovides1 %{kname} = %{kverrel}
+%define kprovides2 kernel = %{tar_ver}
+%define kprovides_server drbd-api = 88
 
-%define kobsoletes1	dkms-r8192se <= 0019.1207.2010-2
-%define kobsoletes2	dkms-lzma <= 4.43-32
-%define kobsoletes3	dkms-psb <= 4.41.1-7
+%define kobsoletes1 dkms-r8192se <= 0019.1207.2010-2
+%define kobsoletes2 dkms-lzma <= 4.43-32
+%define kobsoletes3 dkms-psb <= 4.41.1-7
 
-%define kconflicts1	dkms-broadcom-wl < 5.100.82.112-12
-%define kconflicts2	dkms-fglrx < 13.200.5-1
-%define kconflicts3	dkms-nvidia-current < 325.15-1
-%define kconflicts4	dkms-nvidia-long-lived < 319.49-1
-%define kconflicts5	dkms-nvidia304 < 304.108-1
+%define kconflicts1 dkms-broadcom-wl < 5.100.82.112-12
+%define kconflicts2 dkms-fglrx < 13.200.5-1
+%define kconflicts3 dkms-nvidia-current < 325.15-1
+%define kconflicts4 dkms-nvidia-long-lived < 319.49-1
+%define kconflicts5 dkms-nvidia304 < 304.108-1
 # nvidia173 does not support this kernel
 
 Autoreqprov:	no
