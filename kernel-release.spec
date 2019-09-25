@@ -1010,8 +1010,10 @@ CreateConfig() {
 
 %if %{with clang}
 	CLANG_EXTRAS=clang-workarounds
+	CC=clang
 %else
 	CLANG_EXTRAS=""
+	CC=gcc
 %endif
 
 %if %{with build_modxz}
@@ -1046,7 +1048,7 @@ sed -i -e "s/^# CONFIG_RD_ZSTD is not set/CONFIG_RD_ZSTD=y/g" kernel/configs/com
 		arch=x86
 	fi
 
-	make ARCH="${arch}" $CONFIGS
+	make ARCH="${arch}" CC="$CC" $CONFIGS
 	scripts/config --set-val BUILD_SALT \"$(echo "$arch-$type-%{EVRD}"|sha1sum|awk '{ print $1; }')\"
 }
 
