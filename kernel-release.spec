@@ -75,7 +75,13 @@
 %bcond_without build_source
 %bcond_without build_devel
 %bcond_with build_debug
+# https://github.com/ClangBuiltLinux/linux/issues/3
+%ifnarch %{ix86}
 %bcond_without clang
+%else
+%bcond_with clang
+%endif
+
 %bcond_with bootsplash
 # (tpg) enable patches from ClearLinux
 %bcond_without clr
@@ -408,6 +414,16 @@ Patch805:	Fix-booting-with-ADATA-XPG-SX8200-Pro-512GB.patch
 Patch806:	kernel-5.3.1-objtool-Clobber-user-CFLAGS-variable.patch
 # Defines for the things that are needed for all the kernels
 #
+
+%if %{with clang}
+%ifarch %{armx}
+# https://github.com/ClangBuiltLinux/linux/issues/700
+Patch900:	ARM-xor-neon-Replace-__GNUC__-checks-with-CONFIG_CC_IS_GCC.patch
+# https://github.com/ClangBuiltLinux/linux/issues/696
+Patch901:	ARM-Emit-__gnu_mcount_nc-when-using-Clang-10.0.0-or-newer.patch
+%endif
+%endif
+
 %define common_desc_kernel The kernel package contains the Linux kernel (vmlinuz), the core of your \
 OpenMandriva Lx operating system. The kernel handles the basic functions \
 of the operating system: memory allocation, process allocation, device \

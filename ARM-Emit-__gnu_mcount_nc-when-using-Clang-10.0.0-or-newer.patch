@@ -1,0 +1,61 @@
+From: Nathan Chancellor <natechancellor@gmail.com>
+To: Russell King <linux@armlinux.org.uk>
+Cc: Nick Desaulniers <ndesaulniers@google.com>,
+    Arnd Bergmann <arnd@arndb.de>, Stefan Agner <stefan@agner.ch>,
+    Matthias Kaehlcke <mka@chromium.org>,
+    linux-arm-kernel@lists.infradead.org,
+    linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
+    Nathan Chancellor <natechancellor@gmail.com>
+Subject: [PATCH] ARM: Emit __gnu_mcount_nc when using Clang 10.0.0 or newer
+Date: Wed, 28 Aug 2019 23:26:35 -0700
+Message-ID: <20190829062635.45609-1-natechancellor@gmail.com> (raw)
+
+Currently, multi_v7_defconfig + CONFIG_FUNCTION_TRACER fails to build
+with clang:
+
+arm-linux-gnueabi-ld: kernel/softirq.o: in function `_local_bh_enable':
+softirq.c:(.text+0x504): undefined reference to `mcount'
+arm-linux-gnueabi-ld: kernel/softirq.o: in function `__local_bh_enable_ip':
+softirq.c:(.text+0x58c): undefined reference to `mcount'
+arm-linux-gnueabi-ld: kernel/softirq.o: in function `do_softirq':
+softirq.c:(.text+0x6c8): undefined reference to `mcount'
+arm-linux-gnueabi-ld: kernel/softirq.o: in function `irq_enter':
+softirq.c:(.text+0x75c): undefined reference to `mcount'
+arm-linux-gnueabi-ld: kernel/softirq.o: in function `irq_exit':
+softirq.c:(.text+0x840): undefined reference to `mcount'
+arm-linux-gnueabi-ld: kernel/softirq.o:softirq.c:(.text+0xa50): more undefined references to `mcount' follow
+
+clang can emit a working mcount symbol, __gnu_mcount_nc, when
+'-meabi gnu' is passed to it. Until r369147 in LLVM, this was
+broken and caused the kernel not to boot because the calling
+convention was not correct. Now that it is fixed, add this to
+the command line when clang is 10.0.0 or newer so everything
+works properly.
+
+Link: https://github.com/ClangBuiltLinux/linux/issues/35
+Link: https://bugs.llvm.org/show_bug.cgi?id=33845
+Link: https://github.com/llvm/llvm-project/commit/16fa8b09702378bacfa3d07081afe6b353b99e60
+Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
+---
+ arch/arm/Makefile | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index c3624ca6c0bc..7b5a26a866fc 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -112,6 +112,12 @@ ifeq ($(CONFIG_ARM_UNWIND),y)
+ CFLAGS_ABI	+=-funwind-tables
+ endif
+ 
++ifeq ($(CONFIG_CC_IS_CLANG),y)
++ifeq ($(shell test $(CONFIG_CLANG_VERSION) -ge 100000; echo $$?),0)
++CFLAGS_ABI	+=-meabi gnu
++endif
++endif
++
+ # Accept old syntax despite ".syntax unified"
+ AFLAGS_NOWARN	:=$(call as-option,-Wa$(comma)-mno-warn-deprecated,-Wa$(comma)-W)
+ 
+-- 
+2.23.0
