@@ -425,6 +425,8 @@ Patch901:	ARM-Emit-__gnu_mcount_nc-when-using-Clang-10.0.0-or-newer.patch
 %ifarch %{ix86}
 # https://github.com/ClangBuiltLinux/linux/issues/579
 Patch902:	ix86-cant-create-dynamic-relocation-R_386_32-with-LLD.patch
+# https://github.com/ClangBuiltLinux/linux/issues/3
+Patch903:	i386-percpu.patch
 %endif
 %endif
 

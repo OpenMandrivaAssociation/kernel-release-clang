@@ -1,0 +1,40 @@
+diff --git a/arch/x86/include/asm/percpu.h b/arch/x86/include/asm/percpu.h
+index 2278797c7..e791fbf40 100644
+--- a/arch/x86/include/asm/percpu.h
++++ b/arch/x86/include/asm/percpu.h
+@@ -99,7 +99,7 @@ do {							\
+ 	case 1:						\
+ 		asm qual (op "b %1,"__percpu_arg(0)	\
+ 		    : "+m" (var)			\
+-		    : "qi" ((pto_T__)(val)));		\
++		    : "ri" ((pto_T__)(val)));		\
+ 		break;					\
+ 	case 2:						\
+ 		asm qual (op "w %1,"__percpu_arg(0)	\
+@@ -144,7 +144,7 @@ do {									\
+ 		else							\
+ 			asm qual ("addb %1, "__percpu_arg(0)		\
+ 			    : "+m" (var)				\
+-			    : "qi" ((pao_T__)(val)));			\
++			    : "ri" ((pao_T__)(val)));			\
+ 		break;							\
+ 	case 2:								\
+ 		if (pao_ID__ == 1)					\
+@@ -186,7 +186,7 @@ do {									\
+ 	switch (sizeof(var)) {				\
+ 	case 1:						\
+ 		asm qual (op "b "__percpu_arg(1)",%0"	\
+-		    : "=q" (pfo_ret__)			\
++		    : "=r" (pfo_ret__)			\
+ 		    : "m" (var));			\
+ 		break;					\
+ 	case 2:						\
+@@ -215,7 +215,7 @@ do {									\
+ 	switch (sizeof(var)) {				\
+ 	case 1:						\
+ 		asm(op "b "__percpu_arg(P1)",%0"	\
+-		    : "=q" (pfo_ret__)			\
++		    : "=r" (pfo_ret__)			\
+ 		    : "p" (&(var)));			\
+ 		break;					\
+ 	case 2:						\
