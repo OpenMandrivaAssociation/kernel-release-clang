@@ -1,0 +1,13 @@
+diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
+index 6b84afdd7538..90d59a064136 100644
+--- a/arch/x86/boot/compressed/Makefile
++++ b/arch/x86/boot/compressed/Makefile
+@@ -43,7 +43,7 @@ KBUILD_AFLAGS  := $(KBUILD_CFLAGS) -D__ASSEMBLY__
+ GCOV_PROFILE := n
+ UBSAN_SANITIZE :=n
+ 
+-KBUILD_LDFLAGS := -m elf_$(UTS_MACHINE)
++KBUILD_LDFLAGS := -m elf_$(UTS_MACHINE) -z notext
+ # Compressed kernel should be built as PIE since it may be loaded at any
+ # address by the bootloader.
+ ifeq ($(CONFIG_X86_32),y)

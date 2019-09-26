@@ -421,6 +421,10 @@ Patch900:	ARM-xor-neon-Replace-__GNUC__-checks-with-CONFIG_CC_IS_GCC.patch
 # https://github.com/ClangBuiltLinux/linux/issues/696
 Patch901:	ARM-Emit-__gnu_mcount_nc-when-using-Clang-10.0.0-or-newer.patch
 %endif
+%ifarch %{ix86}
+# https://github.com/ClangBuiltLinux/linux/issues/579
+Patch902:	ix86-cant-create-dynamic-relocation-R_386_32-with-LLD.patch
+%endif
 %endif
 
 %define common_desc_kernel The kernel package contains the Linux kernel (vmlinuz), the core of your \
