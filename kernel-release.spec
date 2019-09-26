@@ -172,10 +172,10 @@
 ############################################################
 ### Linker start1 > Check point to build for omv or rosa ###
 ############################################################
-%define kmake ARCH=%{target_arch} %{make_build} LD='ld.lld' HOSTLD='ld.lld'
+%define kmake ARCH=%{target_arch} %{make_build} LD='ld.lld --icf=none --no-gc-sections' HOSTLD='ld.lld --icf=none --no-gc-sections'
 # there are places where parallel make don't work
 # usually we use this
-%define smake make LD='ld.lld' HOSTLD='ld.lld'
+%define smake make LD='ld.lld --icf=none --no-gc-sections' HOSTLD='ld.lld --icf=none --no-gc-sections'
 
 ###################################################
 ###  Linker end1 > Check point to build for omv ###
