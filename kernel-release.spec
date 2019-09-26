@@ -75,7 +75,13 @@
 %bcond_without build_source
 %bcond_without build_devel
 %bcond_with build_debug
+
+# https://github.com/ClangBuiltLinux/linux/issues/3
+%ifnarch %{ix86}
 %bcond_without clang
+%else
+%bcond_without clang
+%endif
 
 %bcond_with bootsplash
 # (tpg) enable patches from ClearLinux
