@@ -49,7 +49,7 @@ index c3624ca6c0bc..7b5a26a866fc 100644
  endif
  
 +ifeq ($(CONFIG_CC_IS_CLANG),y)
-+ifeq ($(shell test $(CONFIG_CLANG_VERSION) -ge 100000; echo $$?),0)
++ifeq ($(shell test $(CONFIG_CLANG_VERSION) -ge 90000; echo $$?),0)
 +CFLAGS_ABI	+=-meabi gnu
 +endif
 +endif
