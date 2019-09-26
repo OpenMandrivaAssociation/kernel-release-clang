@@ -171,10 +171,10 @@
 ############################################################
 ### Linker start1 > Check point to build for omv or rosa ###
 ############################################################
-%define kmake ARCH=%{target_arch} %{make_build} LD="ld.lld" HOSTLD="$LD"
+%define kmake ARCH=%{target_arch} %{make_build} LD="ld.lld" HOSTLD="ld.lld"
 # there are places where parallel make don't work
 # usually we use this
-%define smake make LD="ld.lld" HOSTLD="$LD"
+%define smake make LD="ld.lld" HOSTLD="ld.lld"
 
 ###################################################
 ###  Linker end1 > Check point to build for omv ###
@@ -1072,7 +1072,7 @@ BuildKernel() {
 # (tpg) build with gcc, as kernel is not yet ready for LLVM/clang
 %ifarch %{x86_64}
 %if %{with clang}
-    %kmake all HOSTCC=clang HOSTCXX=clang++ CC=clang CXX=clang++ CFLAGS="$CFLAGS -flto=thin" LDFLAGS="%{ldflags} -flto=thin" BJCOPY=llvm-objcopy AR=llvm-ar NM=llvm-nm STRIP=llvm-strip OBJDUMP=llvm-objdump HOSTAR=llvm-ar
+    %kmake all HOSTCC=clang HOSTCXX=clang++ CC=clang CXX=clang++ CFLAGS="$CFLAGS -flto=thin" LDFLAGS="%{ldflags} -flto=thin" OBJCOPY=llvm-objcopy AR=llvm-ar NM=llvm-nm STRIP=llvm-strip OBJDUMP=llvm-objdump HOSTAR=llvm-ar
 %else
     %kmake all CC=gcc CXX=g++ CFLAGS="$CFLAGS -flto"
 %endif
