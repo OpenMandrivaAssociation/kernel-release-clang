@@ -171,16 +171,10 @@
 ############################################################
 ### Linker start1 > Check point to build for omv or rosa ###
 ############################################################
-%ifarch %{x86_64}
-LD=ld.lld
-%else
-LD=ld.bfd
-%endif
-
-%define kmake ARCH=%{target_arch} %{make_build} LD="$LD" HOSTLD="$LD"
+%define kmake ARCH=%{target_arch} %{make_build} LD="ld.lld" HOSTLD="$LD"
 # there are places where parallel make don't work
 # usually we use this
-%define smake make LD="$LD" HOSTLD="$LD"
+%define smake make LD="ld.lld" HOSTLD="$LD"
 
 ###################################################
 ###  Linker end1 > Check point to build for omv ###
