@@ -5,7 +5,11 @@
 %define _disable_ld_no_undefined 1
 
 # (tpg) try to speed up things
+%ifarch %{x86_64}
+%global optflags %{optflags} -O3 -ffunction-sections -fdata-sections
+%else
 %global optflags %{optflags} -O3
+%endif
 
 # While perf comes with python2 scripts
 %define _python_bytecompile_build 0
@@ -78,7 +82,6 @@
 
 %ifarch %{x86_64}
 %define default_ld ld.lld
-%define optflags %{optflags} -ffunction-sections -fdata-sections
 %else
 %define default_ld ld.lld --icf=none --no-gc-sections
 %endif
