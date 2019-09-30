@@ -78,6 +78,7 @@
 
 %ifarch %{x86_64}
 %define default_ld ld.lld
+%define optflags %{optflags} -ffunction-sections -fdata-sections
 %else
 %define default_ld ld.lld --icf=none --no-gc-sections
 %endif
