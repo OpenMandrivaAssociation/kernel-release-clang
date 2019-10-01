@@ -354,7 +354,6 @@ Patch311:	https://github.com/sirlucjan/kernel-patches/blob/master/5.2/cpu-patche
 # Assorted fixes
 Patch330:	amdgpu-suspendresume.patch
 # https://cgit.freedesktop.org/~agd5f/linux/patch/?id=b59953fdf2252a140cd6fab9ab5fe42ea07f0182
-Patch331:	c3a3e94fd468be6cefa0a444b6f13a273d9be5b9..b59953fdf2252a140cd6fab9ab5fe42ea07f0182.patch
 ## Intel Core2Duo got always unstable tsc , with changes in 4.18
 ## some models cannot boot anymore , they are stuck in a endless loop.
 ## see: https://lkml.org/lkml/2018/8/30/341
