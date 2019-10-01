@@ -1,5 +1,5 @@
 sources:
   linux-5.3.tar.sign: adca2b76f10b2a73a5ad37fbab2a7f195e0e0c1e
   linux-5.3.tar.xz: 988855d1fee4eb12495a5b3602e2f3471623ec3e
-  patch-5.3.1.xz: bd8e57aee3e886edb8bc892956d6d55842451a97
+  patch-5.3.2.xz: 3e43302f2ea84b3b904d12e3a248e0f3aaabd474
   saa716x-driver.tar.xz: f9b6ef1cd6f1f71f53d9a8aadfba2cf6b5c3d7b6
