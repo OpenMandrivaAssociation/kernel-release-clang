@@ -76,12 +76,7 @@
 %bcond_without build_devel
 %bcond_with build_debug
 
-# https://github.com/ClangBuiltLinux/linux/issues/3
-%ifnarch %{ix86}
-%bcond_with clang
-%else
 %bcond_without clang
-%endif
 
 %bcond_with bootsplash
 # (tpg) enable patches from ClearLinux
@@ -200,7 +195,7 @@ Group:		System/Kernel and hardware
 # (tpg) 2019-10-01
 # riscv is broken https://github.com/ClangBuiltLinux/linux/issues/727
 # ix86 is broken https://github.com/ClangBuiltLinux/linux/issues/3
-ExclusiveArch:	%{ix86} %{x86_64} %{armx}
+ExclusiveArch:	%{ix86} %{x86_64} armv7hnl
 ExclusiveOS:	Linux
 URL:		http://www.kernel.org
 
@@ -1090,9 +1085,9 @@ BuildKernel() {
 # (tpg) build with gcc, as kernel is not yet ready for LLVM/clang
 %ifarch %{x86_64}
 %if %{with clang}
-    %kmake all HOSTCC=clang HOSTCXX=clang++ CC=clang CXX=clang++ CFLAGS="$CFLAGS -flto=thin" LDFLAGS="%{ldflags} -flto=thin" OBJCOPY=llvm-objcopy AR=llvm-ar NM=llvm-nm STRIP=llvm-strip OBJDUMP=llvm-objdump HOSTAR=llvm-ar
+    %kmake all HOSTCC=clang HOSTCXX=clang++ CC=clang CXX=clang++ CFLAGS="$CFLAGS" LDFLAGS="%{ldflags}" OBJCOPY=llvm-objcopy AR=llvm-ar NM=llvm-nm STRIP=llvm-strip OBJDUMP=llvm-objdump HOSTAR=llvm-ar
 %else
-    %kmake all CC=gcc CXX=g++ CFLAGS="$CFLAGS -flto"
+    %kmake all CC=gcc CXX=g++ CFLAGS="$CFLAGS"
 %endif
 %else
 %if %{with clang}
