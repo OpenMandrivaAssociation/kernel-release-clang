@@ -409,7 +409,6 @@ Patch802:	https://gitweb.frugalware.org/wip_kernel/raw/23f5e50042768b823e1861315
 #Patch804:	MuQSS-export-can_nice-for-binder.patch
 # (crazy) XPG 8200 Pro NVME 512GB ( pending upstream for 5.4 )
 Patch805:	Fix-booting-with-ADATA-XPG-SX8200-Pro-512GB.patch
-Patch806:	kernel-5.3.1-objtool-Clobber-user-CFLAGS-variable.patch
 # Defines for the things that are needed for all the kernels
 #
 
