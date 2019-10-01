@@ -1,8 +1,8 @@
-diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
---- a/arch/x86/boot/compressed/Makefile
-+++ b/arch/x86/boot/compressed/Makefile
-@@ -56,6 +56,12 @@ KBUILD_LDFLAGS += $(shell $(LD) --help 2>&1 | grep -q "\-z noreloc-overflow" \
-    && echo "-z noreloc-overflow -pie --no-dynamic-linker")
+diff -Naur a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
+--- a/arch/x86/boot/compressed/Makefile	2019-10-01 17:00:34.782587307 +0000
++++ b/arch/x86/boot/compressed/Makefile	2019-10-01 17:04:05.164139147 +0000
+@@ -56,6 +56,12 @@
+ 	&& echo "-z noreloc-overflow -pie --no-dynamic-linker")
  endif
  LDFLAGS_vmlinux := -T
 +ifeq ($(CONFIG_RELOCATABLE), y)
@@ -14,4 +14,3 @@ diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefi
  
  hostprogs-y	:= mkpiggy
  HOST_EXTRACFLAGS += -I$(srctree)/tools/include
-

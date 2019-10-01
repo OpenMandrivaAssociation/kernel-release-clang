@@ -1083,18 +1083,10 @@ BuildKernel() {
     KernelVer=$1
     printf '%s\n' "Building kernel $KernelVer"
 # (tpg) build with gcc, as kernel is not yet ready for LLVM/clang
-%ifarch %{x86_64}
 %if %{with clang}
     %kmake all HOSTCC=clang HOSTCXX=clang++ CC=clang CXX=clang++ CFLAGS="$CFLAGS" LDFLAGS="%{ldflags}" OBJCOPY=llvm-objcopy AR=llvm-ar NM=llvm-nm STRIP=llvm-strip OBJDUMP=llvm-objdump HOSTAR=llvm-ar
 %else
     %kmake all CC=gcc CXX=g++ CFLAGS="$CFLAGS"
-%endif
-%else
-%if %{with clang}
-    %kmake all HOSTCC=clang HOSTCXX=clang++ CC=clang CXX=clang++ CFLAGS="$CFLAGS" LDFLAGS="%{ldflags}" OBJCOPY=llvm-objcopy AR=llvm-ar NM=llvm-nm STRIP=llvm-strip OBJDUMP=llvm-objdump HOSTAR=llvm-ar
-%else
-    %kmake all CC=gcc CXX=g++ CFLAGS="$CFLAGS"
-%endif
 %endif
 
 # Start installing stuff
