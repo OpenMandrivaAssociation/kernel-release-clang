@@ -352,7 +352,6 @@ Patch310:	https://github.com/sirlucjan/kernel-patches/blob/master/5.2/cpu-patche
 Patch311:	https://github.com/sirlucjan/kernel-patches/blob/master/5.2/cpu-patches/0002-cpu-5.2-add-a-CONFIG-option-that-sets-O3.patch
 
 # Assorted fixes
-Patch329:	http://homebox.tk/fix-amdgpu-resume-black-screen.patch
 Patch330:	amdgpu-suspendresume.patch
 # https://cgit.freedesktop.org/~agd5f/linux/patch/?id=b59953fdf2252a140cd6fab9ab5fe42ea07f0182
 Patch331:	c3a3e94fd468be6cefa0a444b6f13a273d9be5b9..b59953fdf2252a140cd6fab9ab5fe42ea07f0182.patch
