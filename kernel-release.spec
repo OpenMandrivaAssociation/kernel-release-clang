@@ -5,11 +5,7 @@
 %define _disable_ld_no_undefined 1
 
 # (tpg) try to speed up things
-%ifarch %{x86_64}
-%global optflags %{optflags} -O3 -ffunction-sections -fdata-sections
-%else
 %global optflags %{optflags} -O3
-%endif
 
 # While perf comes with python2 scripts
 %define _python_bytecompile_build 0
@@ -79,12 +75,6 @@
 %bcond_without build_source
 %bcond_without build_devel
 %bcond_with build_debug
-
-%ifarch %{x86_64}
-%define default_ld ld.lld
-%else
-%define default_ld ld.lld --icf=none --no-gc-sections
-%endif
 
 # https://github.com/ClangBuiltLinux/linux/issues/3
 %ifnarch %{ix86}
@@ -182,10 +172,10 @@
 ############################################################
 ### Linker start1 > Check point to build for omv or rosa ###
 ############################################################
-%define kmake ARCH=%{target_arch} %{make_build} LD=%{default_ld} HOSTLD=%{default_ld}
+%define kmake ARCH=%{target_arch} %{make_build} LD='ld.lld --icf=none --no-gc-sections' HOSTLD='ld.lld --icf=none --no-gc-sections'
 # there are places where parallel make don't work
 # usually we use this
-%define smake make LD=%{default_ld} HOSTLD=%{default_ld}
+%define smake make LD='ld.lld --icf=none --no-gc-sections' HOSTLD='ld.lld --icf=none --no-gc-sections'
 
 ###################################################
 ###  Linker end1 > Check point to build for omv ###
