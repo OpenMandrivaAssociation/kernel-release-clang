@@ -601,7 +601,9 @@ Release:	%{rpmrel}				\
 Requires:	glibc-devel				\
 Requires:	ncurses-devel				\
 Requires:	make					\
+%if %{without clang}                                    \
 Requires:	gcc >= 7.2.1_2017.11-3			\
+%endif                                                  \
 Requires:	perl					\
 %ifarch %{x86_64}					\
 Requires:	pkgconfig(libelf)			\
@@ -715,7 +717,9 @@ Release:	%{rpmrel}
 Requires:	glibc-devel
 Requires:	ncurses-devel
 Requires:	make
+%if %{without clang}
 Requires:	gcc >= 7.2.1_2017.11-3
+%endif
 Requires:	perl
 Requires:	diffutils
 Summary:	The Linux source code for %{kname}-%{buildrel}
