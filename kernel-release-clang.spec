@@ -1558,11 +1558,11 @@ done
 make mrproper
 
 %if %{with build_desktop}
-CreateKernel desktop
+CreateKernel desktop-clang
 %endif
 
 %if %{with build_server}
-CreateKernel server
+CreateKernel server-clang
 %endif
 
 # how to build own flavour
