@@ -195,7 +195,7 @@ Group:		System/Kernel and hardware
 # (tpg) 2019-10-01
 # riscv is broken https://github.com/ClangBuiltLinux/linux/issues/727
 # ix86 is broken https://github.com/ClangBuiltLinux/linux/issues/3
-ExclusiveArch:	%{ix86} %{x86_64} armv7hnl
+ExclusiveArch:	%{ix86} %{x86_64} %{armx}
 ExclusiveOS:	Linux
 URL:		http://www.kernel.org
 
