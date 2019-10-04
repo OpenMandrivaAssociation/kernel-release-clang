@@ -1644,20 +1644,20 @@ done
 
 # sniff, if we compressed all the modules, we change the stamp :(
 # we really need the depmod -ae here
-pushd %{target_modules}
+cd %{target_modules}
 for i in *; do
     /sbin/depmod -ae -b %{buildroot} -F %{target_boot}/System.map-"$i" "$i"
     echo $?
 done
 
 for i in *; do
-    pushd $i
+    cd $i
     printf '%s\n' "Creating modules.description for $i"
     modules=$(find . -name "*.ko.[gxz]*[z|st]")
     echo $modules | %kxargs /sbin/modinfo | perl -lne 'print "$name\t$1" if $name && /^description:\s*(.*)/; $name = $1 if m!^filename:\s*(.*)\.k?o!; $name =~ s!.*/!!' > modules.description
-    popd
+    cd -
 done
-popd
+cd -
 
 # need to set extraversion to match srpm again to avoid rebuild
 sed -ri "s|^(EXTRAVERSION =).*|\1 -%{rpmrel}|" Makefile
