@@ -194,7 +194,8 @@ License:	GPLv2
 Group:		System/Kernel and hardware
 # (tpg) 2019-10-01
 # riscv is broken https://github.com/ClangBuiltLinux/linux/issues/727
-ExclusiveArch:	%{ix86} %{x86_64} %{armx}
+# aarch64 is broken https://github.com/ClangBuiltLinux/linux/issues/634
+ExclusiveArch:	%{ix86} %{x86_64} armv7hnl
 ExclusiveOS:	Linux
 URL:		http://www.kernel.org
 
