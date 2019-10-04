@@ -608,7 +608,7 @@ Requires:	pkgconfig(libelf)			\
 %endif							\
 Summary:	The kernel-devel files for %{kname}-%{1}-%{buildrel} \
 Group:		Development/Kernel			\
-Provides:	kernel-devel = %{kverrel}		\
+#Provides:	kernel-devel = %{kverrel}		\
 Provides:	%{kname}-devel = %{kverrel} 		\
 Provides:	%{kname}-%{1}-devel-%{buildrel}		\
 Conflicts:	%{kname}-%{1}-devel-latest <= %{kversion}-%{rpmrel} \
@@ -635,7 +635,7 @@ Version:	%{kversion}				\
 Release:	%{rpmrel}				\
 Summary:	Files with debuginfo for %{kname}-%{1}-%{buildrel} \
 Group:		Development/Debug			\
-Provides:	kernel-debug = %{kverrel} 		\
+#Provides:	kernel-debug = %{kverrel} 		\
 Provides:	kernel-%{1}-%{buildrel}-debuginfo	\
 Provides:	installonlypkg(kernel)			\
 Requires:	%{kname}-%{1} = %{kversion}-%{rpmrel}	\
@@ -721,8 +721,8 @@ Requires:	diffutils
 Summary:	The Linux source code for %{kname}-%{buildrel}
 Group:		Development/Kernel
 Autoreqprov:	no
-Provides:	kernel-source = %{kverrel}
-Provides:	kernel-source-%{buildrel}
+#Provides:	kernel-source = %{kverrel}
+#Provides:	kernel-source-%{buildrel}
 Provides:	installonlypkg(kernel)
 Conflicts:	%{kname}-source-latest <= %{kversion}-%{rpmrel}
 Obsoletes:	%{kname}-source-latest <= %{kversion}-%{rpmrel}
@@ -836,8 +836,8 @@ Summary:	Linux kernel header files mostly used by your C library
 Group:		System/Kernel and hardware
 Epoch:		1
 # (tpg) fix bug https://issues.openmandriva.org/show_bug.cgi?id=1580
-Provides:	kernel-headers = 1:%{kverrel}
-Obsoletes:	kernel-headers < 1:%{kverrel}
+# Provides:	kernel-headers = 1:%{kverrel}
+# Obsoletes:	kernel-headers < 1:%{kverrel}
 %rename linux-userspace-headers
 
 %description headers
