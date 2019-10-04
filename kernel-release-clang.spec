@@ -35,7 +35,7 @@
 %define rpmrel		0.rc%{relc}.1
 %define tar_ver   	%{kernelversion}.%{patchlevel}-rc%{relc}
 %else
-%define rpmrel		1
+%define rpmrel		2
 %define tar_ver		%{kernelversion}.%{patchlevel}
 %endif
 %define buildrpmrel	%{rpmrel}%{rpmtag}
@@ -194,7 +194,6 @@ License:	GPLv2
 Group:		System/Kernel and hardware
 # (tpg) 2019-10-01
 # riscv is broken https://github.com/ClangBuiltLinux/linux/issues/727
-# ix86 is broken https://github.com/ClangBuiltLinux/linux/issues/3
 ExclusiveArch:	%{ix86} %{x86_64} %{armx}
 ExclusiveOS:	Linux
 URL:		http://www.kernel.org
@@ -289,10 +288,6 @@ Source112:	RFC-v3-13-13-tools-bootsplash-Add-script-and-data-to-create-sample-fi
 # (tpg) sources can be found here https://github.com/dolohow/uksm
 %if %{with uksm}
 Patch120:	https://raw.githubusercontent.com/dolohow/uksm/master/v5.x/uksm-5.3.patch
-# Sometimes other people are ahead of upstream porting to new releases...
-# No UKSM for 5.2-rc yet...
-#Patch120:	https://github.com/sirlucjan/kernel-patches/raw/master/5.1/uksm-pf/0001-uksm-5.1-initial-submission.patch
-#Patch121:	https://github.com/sirlucjan/kernel-patches/raw/master/5.1/uksm-pf-fix/0001-uksm-5.1-apply-52d1e606ee733.patch
 %endif
 
 %if %{with build_modzstd}
@@ -434,6 +429,8 @@ Patch902:	ix86-cant-create-dynamic-relocation-R_386_32-with-LLD.patch
 # https://github.com/ClangBuiltLinux/linux/issues/3
 Patch903:	i386-percpu.patch
 %endif
+# https://github.com/ClangBuiltLinux/linux/issues/216
+Patch904:	x86-realmode-Explicitly-set-entry-point-via-ENTRY-in-linker-script.patch
 %endif
 
 %define common_desc_kernel The kernel package contains the Linux kernel (vmlinuz), the core of your \
