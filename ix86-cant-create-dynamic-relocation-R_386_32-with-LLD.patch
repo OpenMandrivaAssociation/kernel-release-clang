@@ -4,13 +4,14 @@ diff -Naur a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefi
 @@ -56,6 +56,12 @@
  	&& echo "-z noreloc-overflow -pie --no-dynamic-linker")
  endif
- LDFLAGS_vmlinux := -T
+-LDFLAGS_vmlinux := -T
 +ifeq ($(CONFIG_RELOCATABLE), y)
 +# LLD by default disallows relocations in read-only segments. For a relocatable
 +# kernel, we pass -z notext to the linker to explicitly allow relocations. This
 +# behavior is default for BFD.
 +LDFLAGS_vmlinux += -z notext
 +endif
- 
++LDFLAGS_vmlinux += -T
+
  hostprogs-y	:= mkpiggy
  HOST_EXTRACFLAGS += -I$(srctree)/tools/include
