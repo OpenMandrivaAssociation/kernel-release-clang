@@ -408,6 +408,10 @@ Patch805:	Fix-booting-with-ADATA-XPG-SX8200-Pro-512GB.patch
 # until is implemented / fixed.
 #Patch809:	acer-wmi-silence-unknow-functions-messages.patch
 
+# https://steamcommunity.com/games/221410/announcements/detail/2957094910196249305
+# https://gitlab.collabora.com/krisman/linux/commits/futex-wait-multiple-master
+Patch900:	futex-wait-multiple-5.2.1.patch
+
 # Defines for the things that are needed for all the kernels
 #
 
