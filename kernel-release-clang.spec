@@ -1651,7 +1651,7 @@ for i in *; do
     printf '%s\n' "Creating modules.description for $i"
     modules=$(find . -name "*.ko.[gxz]*[z|st]")
     echo $modules | %kxargs /sbin/modinfo | perl -lne 'print "$name\t$1" if $name && /^description:\s*(.*)/; $name = $1 if m!^filename:\s*(.*)\.k?o!; $name =~ s!.*/!!' > modules.description
-    cd -
+    cd ..
 done
 cd -
 
