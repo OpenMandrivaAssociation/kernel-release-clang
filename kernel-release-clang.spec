@@ -682,7 +682,7 @@ voluntary preempt, CFS cpu scheduler and BFQ i/o scheduler.
 multiple %{_arch} processor(s)/core(s), using HZ_1000, \
 voluntary preempt, CFS cpu scheduler and BFQ i/o scheduler, ONDEMAND governor.
 %endif
-%mkflavour desktop
+%mkflavour desktop-clang
 %endif
 
 #
