@@ -517,8 +517,6 @@ BuildRequires:	flex
 # BuildRequires:	gtk2-devel
 BuildRequires:	pkgconfig(libunwind)
 BuildRequires:	pkgconfig(libnewt)
-BuildRequires:	perl-devel
-# BuildRequires:	perl(ExtUtils::Embed)
 BuildRequires:	pkgconfig(gtk+-2.0)
 BuildRequires:	pkgconfig(python2)
 BuildRequires:	pkgconfig(zlib)
@@ -596,7 +594,6 @@ Requires:	make					\
 %if %{without clang}                                    \
 Requires:	gcc >= 7.2.1_2017.11-3			\
 %endif                                                  \
-Requires:	perl					\
 %ifarch %{x86_64}					\
 Requires:	pkgconfig(libelf)			\
 %endif							\
@@ -712,7 +709,6 @@ Requires:	make
 %if %{without clang}
 Requires:	gcc >= 7.2.1_2017.11-3
 %endif
-Requires:	perl
 Requires:	diffutils
 Summary:	The Linux source code for %{kname}-%{buildrel}
 Group:		Development/Kernel
@@ -1644,14 +1640,6 @@ cd %{target_modules}
 for i in *; do
     /sbin/depmod -ae -b %{buildroot} -F %{target_boot}/System.map-"$i" "$i"
     echo $?
-done
-
-for i in *; do
-    cd $i
-    printf '%s\n' "Creating modules.description for $i"
-    modules=$(find . -name "*.ko.[gxz]*[z|st]")
-    echo $modules | %kxargs /sbin/modinfo | perl -lne 'print "$name\t$1" if $name && /^description:\s*(.*)/; $name = $1 if m!^filename:\s*(.*)\.k?o!; $name =~ s!.*/!!' > modules.description
-    cd ..
 done
 cd -
 
