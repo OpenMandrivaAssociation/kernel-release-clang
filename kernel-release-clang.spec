@@ -46,9 +46,9 @@
 
 # kernel base name (also name of srpm)
 %if 0%{relc}
-%define kname		kernel-rc-clang
+%define kname		kernel-rc
 %else
-%define kname		kernel-release-clang
+%define kname		kernel-release
 %endif
 
 # version defines
@@ -214,7 +214,7 @@ NoSource:	0
 %endif
 
 Source4:	README.kernel-sources
-Source5:	%{name}.rpmlintrc
+Source5:	%{name}-clang.rpmlintrc
 # Global configs
 Source6:	common.config
 Source8:	common-desktop.config
@@ -408,7 +408,7 @@ Patch805:	Fix-booting-with-ADATA-XPG-SX8200-Pro-512GB.patch
 
 # https://steamcommunity.com/games/221410/announcements/detail/2957094910196249305
 # https://gitlab.collabora.com/krisman/linux/commits/futex-wait-multiple-master
-Patch900:	futex-wait-multiple-5.2.1.patch
+Patch810:	futex-wait-multiple-5.2.1.patch
 
 # Defines for the things that are needed for all the kernels
 #
