@@ -823,6 +823,7 @@ Group:		System/Kernel and hardware
 Tool to report processor frequency and idle statistics.
 %endif
 
+%if %{with build_devel}
 %package headers
 Version:	%{kversion}
 Release:	%{rpmrel}
@@ -877,6 +878,7 @@ ${i} targets.
 EOF
 done
 )
+%endif
 %endif
 
 #
@@ -1122,8 +1124,10 @@ BuildKernel() {
     install -d %{temp_modules}/$KernelVer
     %{smake} INSTALL_MOD_PATH=%{temp_root} KERNELRELEASE=$KernelVer INSTALL_MOD_STRIP=1 modules_install
 
+%if %{with build_devel}
 # headers
     %{make_build} INSTALL_HDR_PATH=%{temp_root}%{_prefix} KERNELRELEASE=$KernelVer ARCH=%{target_arch} SRCARCH=%{target_arch} headers_install
+%endif
 
 %ifarch %{armx}
     %{smake} ARCH=%{target_arch} V=1 dtbs INSTALL_DTBS_PATH=%{temp_boot}/dtb-$KernelVer dtbs_install
