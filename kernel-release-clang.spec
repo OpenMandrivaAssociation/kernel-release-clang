@@ -72,8 +72,8 @@
 %else
 %bcond_with uksm
 %endif
-%bcond_without build_source
-%bcond_without build_devel
+%bcond_with build_source
+%bcond_with build_devel
 %bcond_with build_debug
 
 %bcond_without clang
@@ -81,11 +81,8 @@
 %bcond_with bootsplash
 # (tpg) enable patches from ClearLinux
 %bcond_without clr
-%if %mdvver > 3000000
-%bcond_without cross_headers
-%else
+
 %bcond_with cross_headers
-%endif
 
 %global cross_header_archs	aarch64-linux armv7hnl-linux i686-linux x86_64-linux x32-linux riscv32-linux riscv64-linux aarch64-linuxmusl armv7hnl-linuxmusl i686-linuxmusl x86_64-linuxmusl x32-linuxmusl riscv32-linuxmusl riscv64-linuxmusl aarch64-android armv7l-android armv8l-android
 %global long_cross_header_archs %(
@@ -112,14 +109,15 @@
 
 # build perf and cpupower tools
 %bcond_with build_perf
-%bcond_without build_x86_energy_perf_policy
-%bcond_without build_turbostat
+%bcond_with build_x86_energy_perf_policy
+%bcond_with build_turbostat
 %ifarch %{ix86} %{x86_64}
-%bcond_without build_cpupower
+%bcond_with build_cpupower
 %else
 # cpupower is currently x86 only
 %bcond_with build_cpupower
 %endif
+
 # (tpg) Virtualbox module makes sens only on ix86 and x86_64
 # 2019-09-23
 # BUILDSTDERR: In file included from drivers/net/vboxnetadp/linux/VBoxNetAdp-linux.c:31:
