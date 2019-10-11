@@ -46,9 +46,9 @@
 
 # kernel base name (also name of srpm)
 %if 0%{relc}
-%define kname		kernel-rc
+%define kname		kernel-rc-clang
 %else
-%define kname		kernel-release
+%define kname		kernel-release-clang
 %endif
 
 # version defines
@@ -214,7 +214,7 @@ NoSource:	0
 %endif
 
 Source4:	README.kernel-sources
-Source5:	%{name}-clang.rpmlintrc
+Source5:	%{name}.rpmlintrc
 # Global configs
 Source6:	common.config
 Source8:	common-desktop.config
