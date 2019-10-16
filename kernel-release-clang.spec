@@ -35,7 +35,7 @@
 %define rpmrel		0.rc%{relc}.1
 %define tar_ver   	%{kernelversion}.%{patchlevel}-rc%{relc}
 %else
-%define rpmrel		1
+%define rpmrel		2
 %define tar_ver		%{kernelversion}.%{patchlevel}
 %endif
 %define buildrpmrel	%{rpmrel}%{rpmtag}
@@ -1019,9 +1019,13 @@ CreateConfig() {
 %if %{with clang}
 	CLANG_EXTRAS=clang-workarounds
 	CC=clang
+	CXX=clang++
+	LLVM_TOOLS='OBJCOPY=llvm-objcopy AR=llvm-ar NM=llvm-nm STRIP=llvm-strip OBJDUMP=llvm-objdump HOSTAR=llvm-ar'
 %else
 	CLANG_EXTRAS=""
 	CC=gcc
+	CXX=g++
+	LLVM_TOOLS=""
 %endif
 
 %if %{with build_modxz}
@@ -1056,7 +1060,7 @@ sed -i -e "s/^# CONFIG_RD_ZSTD is not set/CONFIG_RD_ZSTD=y/g" kernel/configs/com
 		arch=x86
 	fi
 
-	make ARCH="${arch}" CC="$CC" $CONFIGS
+	make ARCH="${arch}" CC="$CC" HOSTCC="$CC" HOSTCXX="$CXX" CXX="$CXX" $LLVM_TOOLS $CONFIGS
 	scripts/config --set-val BUILD_SALT \"$(echo "$arch-$type-%{EVRD}"|sha1sum|awk '{ print $1; }')\"
 }
 
@@ -1589,11 +1593,11 @@ chmod +x tools/power/cpupower/utils/version-gen.sh
 
 %ifarch %{ix86} %{x86_64}
 %if %{with build_x86_energy_perf_policy}
-%kmake -C tools/power/x86/x86_energy_perf_policy CC=clang LDFLAGS="%{optflags} -Wl,--build-id=none"
+%kmake -C tools/power/x86/x86_energy_perf_policy CC=%{__cc} LDFLAGS="%{optflags} -Wl,--build-id=none"
 %endif
 
 %if %{with build_turbostat}
-%kmake -C tools/power/x86/turbostat CC=clang
+%kmake -C tools/power/x86/turbostat CC=%{__cc}
 %endif
 %endif
 
