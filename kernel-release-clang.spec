@@ -1060,7 +1060,7 @@ sed -i -e "s/^# CONFIG_RD_ZSTD is not set/CONFIG_RD_ZSTD=y/g" kernel/configs/com
 		arch=x86
 	fi
 
-	make ARCH="${arch}" CC="$CC" HOSTCC="$CC" HOSTCXX="$CXX" CXX="$CXX" $LLVM_TOOLS $CONFIGS
+	make ARCH="${arch}" CC="$CC" HOSTCC="$CC" HOSTCXX="$CXX" CXX="$CXX" $LLVM_TOOLS V=1 $CONFIGS
 	scripts/config --set-val BUILD_SALT \"$(echo "$arch-$type-%{EVRD}"|sha1sum|awk '{ print $1; }')\"
 }
 
@@ -1084,7 +1084,7 @@ BuildKernel() {
     printf '%s\n' "Building kernel $KernelVer"
 # (tpg) build with gcc, as kernel is not yet ready for LLVM/clang
 %if %{with clang}
-    %kmake all HOSTCC=clang HOSTCXX=clang++ CC=clang CXX=clang++ CFLAGS="$CFLAGS" LDFLAGS="%{ldflags}" OBJCOPY=llvm-objcopy AR=llvm-ar NM=llvm-nm STRIP=llvm-strip OBJDUMP=llvm-objdump HOSTAR=llvm-ar
+    %kmake all HOSTCC=clang HOSTCXX=clang++ CC=clang CXX=clang++ CFLAGS="$CFLAGS" LDFLAGS="%{ldflags}" OBJCOPY=llvm-objcopy AR=llvm-ar NM=llvm-nm STRIP=llvm-strip OBJDUMP=llvm-objdump HOSTAR=llvm-ar V=1
 %else
     %kmake all CC=gcc CXX=g++ CFLAGS="$CFLAGS"
 %endif
