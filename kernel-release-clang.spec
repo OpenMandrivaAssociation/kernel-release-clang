@@ -35,7 +35,7 @@
 %define rpmrel		0.rc%{relc}.1
 %define tar_ver   	%{kernelversion}.%{patchlevel}-rc%{relc}
 %else
-%define rpmrel		1
+%define rpmrel		2
 %define tar_ver		%{kernelversion}.%{patchlevel}
 %endif
 %define buildrpmrel	%{rpmrel}%{rpmtag}
@@ -394,7 +394,7 @@ Patch801:	https://gitweb.frugalware.org/wip_kernel/raw/86234abea5e625043153f6b82
 Patch802:	https://gitweb.frugalware.org/wip_kernel/raw/23f5e50042768b823e18613151cc81b4c0cf6e22/source/base/kernel/fix-acpi_dbg_level.patch
 # (tpg) enable MuQSS CPU scheduler
 # FIXME re-enable when ported to 5.3
-#Patch803:	http://ck.kolivas.org/patches/muqss/5.0/5.2/0001-MultiQueue-Skiplist-Scheduler-version-0.193.patch
+Patch803:	http://ck.kolivas.org/patches/muqss/5.0/5.3/0001-MultiQueue-Skiplist-Scheduler-v0.195.patch
 # (bero) And make it compatible with modular binder
 #Patch804:	MuQSS-export-can_nice-for-binder.patch
 # (crazy) XPG 8200 Pro NVME 512GB ( pending upstream for 5.4 )
