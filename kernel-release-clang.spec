@@ -902,6 +902,7 @@ rm -rf .git
 %else
 %apply_patches
 %endif
+
 %if %{with bootsplash}
 git apply %{SOURCE112}
 %endif
