@@ -397,8 +397,6 @@ Patch802:	https://gitweb.frugalware.org/wip_kernel/raw/23f5e50042768b823e1861315
 Patch803:	http://ck.kolivas.org/patches/muqss/5.0/5.3/0001-MultiQueue-Skiplist-Scheduler-v0.195.patch
 # (bero) And make it compatible with modular binder
 Patch804:	MuQSS-export-can_nice-for-binder.patch
-# (crazy) XPG 8200 Pro NVME 512GB ( pending upstream for 5.4 )
-Patch805:	Fix-booting-with-ADATA-XPG-SX8200-Pro-512GB.patch
 # ( crazy ) this one is adding be_silent mod parameter to acer-wmi
 # When a Unknow function is detected ( aka new ACPI interface not yet impelmeted etc )
 # a message is printed in dmesg each time you use this , eg press some key , plug / unplug AC.
