@@ -4,15 +4,15 @@
  		.vid = 0x2646,
  		.fr = "E8FK11.T",
  		.quirks = NVME_QUIRK_SIMPLE_SUSPEND,
--	},
--	{
--		/* https://forum.openmandriva.org/t/nvme-ssd-m2-not-seen-by-omlx-4-0/2407
--		 * Unknown SSD ... Maybe ADATA/Hynix (a similar mn from ADTA
--		 * but vid seems to be Hynix)
--		*/
--		.vid = 0x1c5c,
--		.mn = "HFM128GDHTNG-8310B",
--		.quirks = NVME_QUIRK_NO_APST,
++	},
++	{
++		/* https://forum.openmandriva.org/t/nvme-ssd-m2-not-seen-by-omlx-4-0/2407
++		 * Unknown SSD ... Maybe ADATA/Hynix (a similar mn from ADTA
++		 * but vid seems to be Hynix)
++		*/
++		.vid = 0x1c5c,
++		.mn = "HFM128GDHTNG-8310B",
++		.quirks = NVME_QUIRK_NO_APST,
  	}
  };
  
