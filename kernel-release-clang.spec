@@ -415,8 +415,6 @@ Patch810:	futex-wait-multiple-5.2.1.patch
 %ifarch %{armx}
 # https://github.com/ClangBuiltLinux/linux/issues/700
 Patch900:	ARM-xor-neon-Replace-__GNUC__-checks-with-CONFIG_CC_IS_GCC.patch
-# https://github.com/ClangBuiltLinux/linux/issues/696
-Patch901:	ARM-Emit-__gnu_mcount_nc-when-using-Clang-10.0.0-or-newer.patch
 %endif
 %ifarch %{ix86}
 # https://github.com/ClangBuiltLinux/linux/issues/579
