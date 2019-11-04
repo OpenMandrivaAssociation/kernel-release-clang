@@ -393,10 +393,12 @@ Patch800:	Unknow-SSD-HFM128GDHTNG-8310B-QUIRK_NO_APST.patch
 Patch801:	https://gitweb.frugalware.org/wip_kernel/raw/86234abea5e625043153f6b8295642fd9f42bff0/source/base/kernel/acpi-use-kern_warning_even_when_error.patch
 Patch802:	https://gitweb.frugalware.org/wip_kernel/raw/23f5e50042768b823e18613151cc81b4c0cf6e22/source/base/kernel/fix-acpi_dbg_level.patch
 # (tpg) enable MuQSS CPU scheduler
-# FIXME re-enable when ported to 5.3
+# disable for armx due to errors kernel/sched/MuQSS.c:7013:85: error: use of undeclared identifier 'cpu_llc_id'; did you mean 'sd_llc_id'?
+%ifnarch %{armx}
 Patch803:	http://ck.kolivas.org/patches/muqss/5.0/5.3/0001-MultiQueue-Skiplist-Scheduler-v0.195.patch
 # (bero) And make it compatible with modular binder
 Patch804:	MuQSS-export-can_nice-for-binder.patch
+%endif
 # ( crazy ) this one is adding be_silent mod parameter to acer-wmi
 # When a Unknow function is detected ( aka new ACPI interface not yet impelmeted etc )
 # a message is printed in dmesg each time you use this , eg press some key , plug / unplug AC.
