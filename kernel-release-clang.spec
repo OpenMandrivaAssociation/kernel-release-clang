@@ -693,7 +693,7 @@ no preempt, HZ_100, CFS cpu scheduler and BFQ i/o scheduler, PERFORMANCE governo
 %define info_server This kernel is compiled for server use, single or \
 CFS cpu scheduler and BFQ i/o scheduler, PERFORMANCE governor.
 %endif
-%mkflavour server
+%mkflavour server-clang
 %endif
 
 #
