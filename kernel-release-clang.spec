@@ -115,7 +115,7 @@
 %bcond_with build_cpupower
 %else
 # cpupower is currently x86 only
-%bcond_with build_cpupower
+%bcond_without build_cpupower
 %endif
 
 # (tpg) Virtualbox module makes sens only on ix86 and x86_64
@@ -193,7 +193,7 @@ Group:		System/Kernel and hardware
 # (tpg) 2019-10-01
 # riscv is broken https://github.com/ClangBuiltLinux/linux/issues/727
 # aarch64 is broken https://github.com/ClangBuiltLinux/linux/issues/634
-ExclusiveArch:	%{ix86} %{x86_64} armv7hnl
+ExclusiveArch:	%{ix86} %{x86_64} armv7hnl aarch64
 ExclusiveOS:	Linux
 URL:		http://www.kernel.org
 
