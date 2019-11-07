@@ -115,7 +115,7 @@
 %bcond_with build_cpupower
 %else
 # cpupower is currently x86 only
-%bcond_without build_cpupower
+%bcond_with build_cpupower
 %endif
 
 # (tpg) Virtualbox module makes sens only on ix86 and x86_64
