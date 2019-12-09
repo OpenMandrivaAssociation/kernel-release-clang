@@ -82,7 +82,7 @@
 # (tpg) enable patches from ClearLinux
 %bcond_without clr
 
-%bcond_without cross_headers
+%bcond_with cross_headers
 
 %global cross_header_archs	aarch64-linux armv7hnl-linux i686-linux x86_64-linux x32-linux riscv32-linux riscv64-linux aarch64-linuxmusl armv7hnl-linuxmusl i686-linuxmusl x86_64-linuxmusl x32-linuxmusl riscv32-linuxmusl riscv64-linuxmusl aarch64-android armv7l-android armv8l-android
 %global long_cross_header_archs %(
@@ -1506,7 +1506,8 @@ install -d %{temp_root}
 ###
 # Build the configs for every arch we care about
 # that way, we can be sure all *.config files have the right additions
-for a in arm arm64 i386 x86_64 znver1 riscv64; do
+#for a in arm arm64 i386 x86_64 znver1 
+for i in riscv64; do
 	for t in desktop server; do
 		CreateConfig $a $t
 		export ARCH=$a
