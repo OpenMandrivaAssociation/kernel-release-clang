@@ -165,7 +165,7 @@
 ############################################################
 ### Linker start1 > Check point to build for omv or rosa ###
 ############################################################
-%define kmake ARCH=%{target_arch} %{make_build} LD='ld.lld --icf=none --no-gc-sections' HOSTLD='ld.lld --icf=none --no-gc-sections'
+%define kmake V=1 ARCH=%{target_arch} %{make_build} LD='ld.lld --icf=none --no-gc-sections' HOSTLD='ld.lld --icf=none --no-gc-sections'
 # there are places where parallel make don't work
 # usually we use this
 %define smake make LD='ld.lld --icf=none --no-gc-sections' HOSTLD='ld.lld --icf=none --no-gc-sections'
@@ -193,7 +193,7 @@ Group:		System/Kernel and hardware
 # (tpg) 2019-10-01
 # riscv is broken https://github.com/ClangBuiltLinux/linux/issues/727
 # aarch64 is broken https://github.com/ClangBuiltLinux/linux/issues/634
-ExclusiveArch:	%{ix86} %{x86_64} armv7hnl aarch64
+ExclusiveArch:	%{ix86} %{x86_64} armv7hnl aarch64 riscv64
 ExclusiveOS:	Linux
 URL:		http://www.kernel.org
 
