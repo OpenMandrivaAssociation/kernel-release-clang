@@ -1507,7 +1507,7 @@ install -d %{temp_root}
 # Build the configs for every arch we care about
 # that way, we can be sure all *.config files have the right additions
 #for a in arm arm64 i386 x86_64 znver1 
-for a in riscv64; do
+for a in riscv; do
 	for t in desktop server; do
 		CreateConfig $a $t
 		export ARCH=$a
