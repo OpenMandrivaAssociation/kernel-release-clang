@@ -82,7 +82,7 @@
 # (tpg) enable patches from ClearLinux
 %bcond_without clr
 
-%bcond_with cross_headers
+%bcond_without cross_headers
 
 %global cross_header_archs	aarch64-linux armv7hnl-linux i686-linux x86_64-linux x32-linux riscv32-linux riscv64-linux aarch64-linuxmusl armv7hnl-linuxmusl i686-linuxmusl x86_64-linuxmusl x32-linuxmusl riscv32-linuxmusl riscv64-linuxmusl aarch64-android armv7l-android armv8l-android
 %global long_cross_header_archs %(
@@ -179,7 +179,7 @@
 	[ "$RPM_BUILD_NCPUS" -gt 1 ] && echo "-P $RPM_BUILD_NCPUS")
 
 # Sparc arch wants sparc64 kernels
-%define target_arch %(echo %{_arch} | sed -e 's/mips.*/mips/' -e 's/arm.*/arm/' -e 's/aarch64/arm64/' -e 's/x86_64/x86/' -e 's/i.86/x86/' -e 's/znver1/x86/' -e 's/riscv.*/arm64/')
+%define target_arch %(echo %{_arch} | sed -e 's/mips.*/mips/' -e 's/arm.*/arm/' -e 's/aarch64/arm64/' -e 's/x86_64/x86/' -e 's/i.86/x86/' -e 's/znver1/x86/' -e 's/riscv.*/riscv/')
 
 #
 # SRC RPM description
@@ -1434,11 +1434,11 @@ rm -rf /lib/modules/%{kversion}-$kernel_flavour-%{buildrpmrel}/modules.{alias{,.
 cd /boot > /dev/null
 
 if [ -e vmlinuz-%{kversion}-$kernel_flavour-%{buildrpmrel} ]; then
-	rm -rf vmlinuz-%{kversion}-$kernel_flavour-%{buildrpmrel}
+    rm -rf vmlinuz-%{kversion}-$kernel_flavour-%{buildrpmrel}
 fi
 
 if [ -e initrd-%{kversion}-$kernel_flavour-%{buildrpmrel}.img ]; then
-        rm -rf initrd-%{kversion}-$kernel_flavour-%{buildrpmrel}.img
+    rm -rf initrd-%{kversion}-$kernel_flavour-%{buildrpmrel}.img
 fi
 
 
@@ -1506,7 +1506,7 @@ install -d %{temp_root}
 ###
 # Build the configs for every arch we care about
 # that way, we can be sure all *.config files have the right additions
-for a in arm arm64 i386 x86_64 znver1; do
+for a in arm arm64 i386 x86_64 znver1 riscv64; do
 	for t in desktop server; do
 		CreateConfig $a $t
 		export ARCH=$a
