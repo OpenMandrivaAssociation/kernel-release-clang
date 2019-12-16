@@ -1059,7 +1059,7 @@ sed -i -e "s/^# CONFIG_RD_ZSTD is not set/CONFIG_RD_ZSTD=y/g" kernel/configs/com
 		arch=x86
 	fi
 
-	make V=1 ARCH="${arch}" CC="$CC" HOSTCC="$CC" HOSTCXX="$CXX" CXX="$CXX" $LLVM_TOOLS $CONFIGS
+	make ARCH="${arch}" CC="$CC" HOSTCC="$CC" HOSTCXX="$CXX" CXX="$CXX" KCFLAGS="$CFLAGS" $LLVM_TOOLS $CONFIGS
 	scripts/config --set-val BUILD_SALT \"$(echo "$arch-$type-%{EVRD}"|sha1sum|awk '{ print $1; }')\"
 }
 
