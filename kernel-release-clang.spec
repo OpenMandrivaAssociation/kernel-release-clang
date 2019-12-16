@@ -21,7 +21,7 @@
 # compose tar.xz name and release
 %define kernelversion	5
 %define patchlevel	3
-%define sublevel	15
+%define sublevel	16
 %define relc		%{nil}
 # Only ever wrong on x.0 releases...
 %define previous	%{kernelversion}.%(echo $((%{patchlevel}-1)))
@@ -165,7 +165,7 @@
 ############################################################
 ### Linker start1 > Check point to build for omv or rosa ###
 ############################################################
-%define kmake V=1 ARCH=%{target_arch} %{make_build} LD='ld.lld --icf=none --no-gc-sections' HOSTLD='ld.lld --icf=none --no-gc-sections'
+%define kmake ARCH=%{target_arch} %{make_build} LD='ld.lld --icf=none --no-gc-sections' HOSTLD='ld.lld --icf=none --no-gc-sections'
 # there are places where parallel make don't work
 # usually we use this
 %define smake make LD='ld.lld --icf=none --no-gc-sections' HOSTLD='ld.lld --icf=none --no-gc-sections'
@@ -1083,7 +1083,7 @@ BuildKernel() {
     printf '%s\n' "Building kernel $KernelVer"
 # (tpg) build with gcc, as kernel is not yet ready for LLVM/clang
 %if %{with clang}
-    %kmake all HOSTCC=clang HOSTCXX=clang++ CC=clang CXX=clang++ CFLAGS="$CFLAGS" LDFLAGS="%{ldflags}" OBJCOPY=llvm-objcopy AR=llvm-ar NM=llvm-nm STRIP=llvm-strip OBJDUMP=llvm-objdump HOSTAR=llvm-ar
+    %kmake all HOSTCC=clang HOSTCXX=clang++ CC=clang CXX=clang++ CFLAGS="$CFLAGS" KCFLAGS="$CFLAGS" LDFLAGS="%{ldflags}" LDFLAGS_MODULE="%{ldflags}" OBJCOPY=llvm-objcopy AR=llvm-ar NM=llvm-nm STRIP=llvm-strip OBJDUMP=llvm-objdump HOSTAR=llvm-ar
 %else
     %kmake all CC=gcc CXX=g++ CFLAGS="$CFLAGS"
 %endif
@@ -1506,8 +1506,7 @@ install -d %{temp_root}
 ###
 # Build the configs for every arch we care about
 # that way, we can be sure all *.config files have the right additions
-#for a in arm arm64 i386 x86_64 znver1 
-for a in riscv; do
+for a in arm arm64 i386 x86_64 znver1 riscv; do
 	for t in desktop server; do
 		CreateConfig $a $t
 		export ARCH=$a
@@ -1549,7 +1548,7 @@ for a in riscv; do
 					[ "$a" != "$TripletArch" ] && continue
 					;;
 				esac
-				%{smake} ARCH=${a} SRCARCH=${SARCH} INSTALL_HDR_PATH=%{temp_root}%{_prefix}/${i} headers_install
+				%{smake} KCFLAGS="$CFLAGS" ARCH=${a} SRCARCH=${SARCH} INSTALL_HDR_PATH=%{temp_root}%{_prefix}/${i} headers_install
 			done
 		fi
 %endif
