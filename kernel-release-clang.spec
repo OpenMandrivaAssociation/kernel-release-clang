@@ -409,7 +409,7 @@ Patch810:	linux-5.4.5-fix-build.patch
 
 # https://steamcommunity.com/games/221410/announcements/detail/2957094910196249305
 # https://gitlab.collabora.com/krisman/linux/commits/futex-wait-multiple-master
-Patch810:	futex-wait-multiple-5.2.1.patch
+Patch811:	futex-wait-multiple-5.2.1.patch
 
 # Defines for the things that are needed for all the kernels
 #
