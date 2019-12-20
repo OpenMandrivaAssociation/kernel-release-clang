@@ -20,8 +20,8 @@
 # This is the place where you set kernel version i.e 4.5.0
 # compose tar.xz name and release
 %define kernelversion	5
-%define patchlevel	3
-%define sublevel	16
+%define patchlevel	4
+%define sublevel	5
 %define relc		%{nil}
 # Only ever wrong on x.0 releases...
 %define previous	%{kernelversion}.%(echo $((%{patchlevel}-1)))
@@ -286,7 +286,7 @@ Source112:	RFC-v3-13-13-tools-bootsplash-Add-script-and-data-to-create-sample-fi
 # (tpg) http://kerneldedup.org/en/projects/uksm/download/
 # (tpg) sources can be found here https://github.com/dolohow/uksm
 %if %{with uksm}
-Patch120:	https://raw.githubusercontent.com/dolohow/uksm/master/v5.x/uksm-5.3.patch
+Patch120:	https://raw.githubusercontent.com/dolohow/uksm/master/v5.x/uksm-5.4.patch
 %endif
 
 %if %{with build_modzstd}
@@ -317,6 +317,7 @@ Patch144:	0124-Extend-FEC-enum.patch
 Patch145:	saa716x-driver-integration.patch
 Patch146:	saa716x-4.15.patch
 Patch147:	saa716x-linux-4.19.patch
+Patch148:	saa716x-5.4.patch
 %endif
 
 # Lima driver for ARM Mali graphics chips
@@ -332,7 +333,7 @@ Patch147:	saa716x-linux-4.19.patch
 # https://patchwork.kernel.org/patch/10906949/
 # For newer versions, check
 # https://patchwork.kernel.org/project/linux-fsdevel/list/?submitter=582
-Patch300:	v10-fs-Add-VirtualBox-guest-shared-folder-vboxsf-support.diff
+Patch300:	v15-fs-Add-VirtualBox-guest-shared-folder-vboxsf-support.diff
 Source300:	virtualbox-kernel-5.3.patch
 %endif
 
@@ -341,7 +342,6 @@ Source300:	virtualbox-kernel-5.3.patch
 #Patch310:	https://raw.githubusercontent.com/graysky2/kernel_gcc_patch/master/enable_additional_cpu_optimizations_for_gcc_v8.1%2B_kernel_v4.13%2B.patch
 # More actively maintained for newer kernels
 Patch310:	https://github.com/sirlucjan/kernel-patches/blob/master/5.2/cpu-patches/0001-cpu-5.2-merge-graysky-s-patchset.patch
-Patch311:	https://github.com/sirlucjan/kernel-patches/blob/master/5.2/cpu-patches/0002-cpu-5.2-add-a-CONFIG-option-that-sets-O3.patch
 
 # Assorted fixes
 ## Intel Core2Duo got always unstable tsc , with changes in 4.18
@@ -395,7 +395,7 @@ Patch802:	https://gitweb.frugalware.org/wip_kernel/raw/23f5e50042768b823e1861315
 # (tpg) enable MuQSS CPU scheduler
 # disable for armx due to errors kernel/sched/MuQSS.c:7013:85: error: use of undeclared identifier 'cpu_llc_id'; did you mean 'sd_llc_id'?
 %ifnarch %{armx}
-Patch803:	http://ck.kolivas.org/patches/muqss/5.0/5.3/0001-MultiQueue-Skiplist-Scheduler-v0.195.patch
+Patch803:	http://ck.kolivas.org/patches/muqss/5.0/5.4/0001-MultiQueue-Skiplist-Scheduler-v0.196.patch
 # (bero) And make it compatible with modular binder
 Patch804:	MuQSS-export-can_nice-for-binder.patch
 %endif
@@ -405,6 +405,7 @@ Patch804:	MuQSS-export-can_nice-for-binder.patch
 # Folks reported these upstream can load the model with be_silent=1 to stop the dmesg flood,
 # until is implemented / fixed.
 #Patch809:	acer-wmi-silence-unknow-functions-messages.patch
+Patch810:	linux-5.4.5-fix-build.patch
 
 # https://steamcommunity.com/games/221410/announcements/detail/2957094910196249305
 # https://gitlab.collabora.com/krisman/linux/commits/futex-wait-multiple-master
@@ -980,7 +981,7 @@ cp -a $(ls --sort=time -1d /usr/src/virtualbox-*|head -n1)/vboxpci drivers/pci/
 sed -i -e 's,\$(KBUILD_EXTMOD),drivers/pci/vboxpci,g' drivers/pci/vboxpci/Makefile*
 sed -i -e "s,^KERN_DIR.*,KERN_DIR := $(pwd)," drivers/pci/vboxpci/Makefile*
 echo 'obj-m += vboxpci/' >>drivers/pci/Makefile
-patch -p1 -z .300a~ -b <%{S:300}
+#patch -p1 -z .300a~ -b <%{S:300}
 %endif
 
 # get rid of unwanted files
@@ -1277,7 +1278,6 @@ $DevelRoot/Kconfig
 $DevelRoot/Makefile
 $DevelRoot/Module.symvers
 $DevelRoot/arch/Kconfig
-%doc README.kernel-sources
 EOF
 
 ### Create -devel Post script on the fly
@@ -1343,7 +1343,6 @@ cat > $kernel_files <<EOF
 %ifarch %{armx}
 %{_bootdir}/dtb-%{kversion}-$kernel_flavour-%{buildrpmrel}
 %endif
-%doc README.kernel-sources
 EOF
 
 %if %{with build_debug}
@@ -1746,7 +1745,6 @@ cd -
 
 %if %{with build_source}
 %files -n %{kname}-source
-%doc README.kernel-sources
 %dir %{_kerneldir}
 %dir %{_kerneldir}/arch
 %dir %{_kerneldir}/include
