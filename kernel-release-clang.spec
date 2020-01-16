@@ -125,7 +125,7 @@
 # BUILDSTDERR: #  pragma GCC diagnostic ignored "-Wold-style-declaration" /* 2.6.18-411.0.0.0.1.el5/build/include/asm/apic.h:110: warning: 'inline' is not at beginning of declaration [-Wold-style-declaration] */
 # BUILDSTDERR:                                  ^
 # BUILDSTDERR: 1 error generated.
-%ifarch %{ix86} %{x86_64}
+%ifarch %{x86_64}
 %bcond_without virtualbox
 %else
 %bcond_with virtualbox
