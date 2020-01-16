@@ -21,7 +21,7 @@
 # compose tar.xz name and release
 %define kernelversion	5
 %define patchlevel	4
-%define sublevel	11
+%define sublevel	12
 %define relc		%{nil}
 # Only ever wrong on x.0 releases...
 %define previous	%{kernelversion}.%(echo $((%{patchlevel}-1)))
@@ -126,7 +126,7 @@
 # BUILDSTDERR:                                  ^
 # BUILDSTDERR: 1 error generated.
 %ifarch %{ix86} %{x86_64}
-%bcond_with virtualbox
+%bcond_without virtualbox
 %else
 %bcond_with virtualbox
 %endif
@@ -339,6 +339,8 @@ Patch148:	saa716x-5.4.patch
 # https://patchwork.kernel.org/project/linux-fsdevel/list/?submitter=582
 Patch300:	v15-fs-Add-VirtualBox-guest-shared-folder-vboxsf-support.diff
 Source300:	virtualbox-kernel-5.3.patch
+Source301:	vbox-6.1-fix-build-on-znver1-hosts.patch
+Source302:	vbox-6.1.2-clang.patch
 %endif
 
 # Better support for newer x86 processors
@@ -981,6 +983,8 @@ sed -i -e 's,\$(KBUILD_EXTMOD),drivers/pci/vboxpci,g' drivers/pci/vboxpci/Makefi
 sed -i -e "s,^KERN_DIR.*,KERN_DIR := $(pwd)," drivers/pci/vboxpci/Makefile*
 echo 'obj-m += vboxpci/' >>drivers/pci/Makefile
 #patch -p1 -z .300a~ -b <%{S:300}
+patch -p1 -z .301a~ -b <%{S:301}
+patch -p1 -z .302a~ -b <%{S:302}
 %endif
 
 # get rid of unwanted files
