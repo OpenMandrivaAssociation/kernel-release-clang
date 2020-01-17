@@ -670,12 +670,12 @@ needs debugging info from the kernel, this package may help. \
 #
 %if %{with build_desktop}
 %ifarch %{ix86}
-%define summary_desktop Linux Kernel for desktop use with i686 & 4GB RAM
+%define summary_desktop_clang Linux Kernel for desktop use with i686 & 4GB RAM
 %define info_desktop This kernel is compiled for desktop use, single or \
 multiple i686 processor(s)/core(s) and less than 4GB RAM, using HZ_1000, \
 voluntary preempt, CFS cpu scheduler and BFQ i/o scheduler.
 %else
-%define summary_desktop Linux Kernel for desktop use with %{_arch}
+%define summary_desktop_clang Linux Kernel for desktop use with %{_arch}
 %define info_desktop This kernel is compiled for desktop use, single or \
 multiple %{_arch} processor(s)/core(s), using HZ_1000, \
 voluntary preempt, CFS cpu scheduler and BFQ i/o scheduler, ONDEMAND governor.
@@ -686,12 +686,12 @@ voluntary preempt, CFS cpu scheduler and BFQ i/o scheduler, ONDEMAND governor.
 #
 %if %{with build_server}
 %ifarch %{ix86}
-%define summary_server Linux Kernel for server use with i686 & 64GB RAM
+%define summary_server_clang Linux Kernel for server use with i686 & 64GB RAM
 %define info_server This kernel is compiled for server use, single or \
 multiple i686 processor(s)/core(s) and up to 64GB RAM using PAE, using \
 no preempt, HZ_100, CFS cpu scheduler and BFQ i/o scheduler, PERFORMANCE governor.
 %else
-%define summary_server Linux Kernel for server use with %{_arch}
+%define summary_server_clang Linux Kernel for server use with %{_arch}
 %define info_server This kernel is compiled for server use, single or \
 CFS cpu scheduler and BFQ i/o scheduler, PERFORMANCE governor.
 %endif
