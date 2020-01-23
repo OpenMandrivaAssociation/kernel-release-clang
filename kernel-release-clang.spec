@@ -7,9 +7,6 @@
 # (tpg) try to speed up things
 %global optflags %{optflags} -O3
 
-# While perf comes with python2 scripts
-%define _python_bytecompile_build 0
-
 # (crazy) , well that new way of doing buil-id symlinks
 # does not seems to work, see:
 # https://issues.openmandriva.org/show_bug.cgi?id=2400
@@ -21,7 +18,7 @@
 # compose tar.xz name and release
 %define kernelversion	5
 %define patchlevel	4
-%define sublevel	13
+%define sublevel	14
 %define relc		%{nil}
 # Only ever wrong on x.0 releases...
 %define previous	%{kernelversion}.%(echo $((%{patchlevel}-1)))
@@ -304,7 +301,6 @@ Patch133:	https://gitweb.frugalware.org/frugalware-current/raw/master/source/bas
 
 ### Additional hardware support
 ### TV tuners:
-%if %{without clang}
 # (tpg) 2019-09-23 too much warnings..
 
 # SAA716x DVB driver
@@ -322,7 +318,6 @@ Patch145:	saa716x-driver-integration.patch
 Patch146:	saa716x-4.15.patch
 Patch147:	saa716x-linux-4.19.patch
 Patch148:	saa716x-5.4.patch
-%endif
 
 # Lima driver for ARM Mali graphics chips
 # Generated from https://gitlab.freedesktop.org/lima/linux.git
@@ -520,7 +515,7 @@ BuildRequires:	flex
 BuildRequires:	pkgconfig(libunwind)
 BuildRequires:	pkgconfig(libnewt)
 BuildRequires:	pkgconfig(gtk+-2.0)
-BuildRequires:	pkgconfig(python2)
+BuildRequires:	pkgconfig(python3)
 BuildRequires:	pkgconfig(zlib)
 %endif
 
@@ -885,11 +880,7 @@ done
 # End packages - here begins build stage
 #
 %prep
-%if %{without clang}
 %setup -q -n linux-%{tar_ver} -a 140
-%else
-%setup -q -n linux-%{tar_ver}
-%endif
 
 cp %{S:6} %{S:7} %{S:8} %{S:9} %{S:10} %{S:11} %{S:12} %{S:13} kernel/configs/
 %if 0%{sublevel}
@@ -907,12 +898,10 @@ rm -rf .git
 git apply %{SOURCE112}
 %endif
 
-%if %{without clang}
 # merge SAA716x DVB driver from extra tarball
 sed -i -e '/saa7164/isource "drivers/media/pci/saa716x/Kconfig"' drivers/media/pci/Kconfig
 sed -i -e '/saa7164/iobj-$(CONFIG_SAA716X_CORE) += saa716x/' drivers/media/pci/Makefile
 find drivers/media/tuners drivers/media/dvb-frontends -name "*.c" -o -name "*.h" |xargs sed -i -e 's,"dvb_frontend.h",<media/dvb_frontend.h>,g'
-%endif
 
 %if %{with build_debug}
 %define debug --debug
@@ -997,7 +986,6 @@ chmod 755 tools/objtool/sync-check.sh
 
 %build
 %setup_compile_flags
-export PYTHON=%{__python2}
 
 ############################################################
 ###  Linker end2 > Check point to build for omv or rosa ###
@@ -1578,8 +1566,8 @@ sed -ri "s|^(EXTRAVERSION =).*|\1 -%{rpmrel}|" Makefile
 ### Linker start3 > Check point to build for omv or rosa ###
 ############################################################
 %if %{with build_perf}
-%{smake} -C tools/perf -s HAVE_CPLUS_DEMANGLE=1 CC=%{__cc} PYTHON=%{__python2} WERROR=0 prefix=%{_prefix} all
-%{smake} -C tools/perf -s CC=%{__cc} prefix=%{_prefix} PYTHON=%{__python2} man
+%{smake} -C tools/perf -s HAVE_CPLUS_DEMANGLE=1 CC=%{__cc} WERROR=0 prefix=%{_prefix} all
+%{smake} -C tools/perf -s CC=%{__cc} prefix=%{_prefix} man
 %endif
 
 %if %{with build_cpupower}
@@ -1659,10 +1647,10 @@ sed -ri "s|^(EXTRAVERSION =).*|\1 -%{rpmrel}|" Makefile
 %if %{with build_perf}
 
 # perf tool binary and supporting scripts/binaries
-make -C tools/perf -s CC=%{__cc} V=1 DESTDIR=%{buildroot} WERROR=0 PYTHON=%{__python2} HAVE_CPLUS_DEMANGLE=1 prefix=%{_prefix} install
+make -C tools/perf -s CC=%{__cc} V=1 DESTDIR=%{buildroot} WERROR=0 HAVE_CPLUS_DEMANGLE=1 prefix=%{_prefix} install
 
 # perf man pages (note: implicit rpm magic compresses them later)
-make -C tools/perf  -s CC=%{__cc} V=1 DESTDIR=%{buildroot} WERROR=0 PYTHON=%{__python2} HAVE_CPLUS_DEMANGLE=1 prefix=%{_prefix} install-man
+make -C tools/perf  -s CC=%{__cc} V=1 DESTDIR=%{buildroot} WERROR=0 HAVE_CPLUS_DEMANGLE=1 prefix=%{_prefix} install-man
 %endif
 
 ############################################################
