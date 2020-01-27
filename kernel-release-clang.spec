@@ -330,7 +330,7 @@ Patch148:	saa716x-5.4.patch
 # https://patchwork.kernel.org/patch/10906949/
 # For newer versions, check
 # https://patchwork.kernel.org/project/linux-fsdevel/list/?submitter=582
-Patch300:	v15-fs-Add-VirtualBox-guest-shared-folder-vboxsf-support.diff
+Patch300:	v19-fs-Add-VirtualBox-guest-shared-folder-vboxsf-support.diff
 Source300:	virtualbox-kernel-5.3.patch
 Source301:	vbox-6.1-fix-build-on-znver1-hosts.patch
 Source302:	vbox-6.1.2-clang.patch
@@ -387,10 +387,11 @@ Patch801:	https://gitweb.frugalware.org/wip_kernel/raw/86234abea5e625043153f6b82
 Patch802:	https://gitweb.frugalware.org/wip_kernel/raw/23f5e50042768b823e18613151cc81b4c0cf6e22/source/base/kernel/fix-acpi_dbg_level.patch
 # (tpg) enable MuQSS CPU scheduler
 # disable for armx due to errors kernel/sched/MuQSS.c:7013:85: error: use of undeclared identifier 'cpu_llc_id'; did you mean 'sd_llc_id'?
+# FIXME needs porting to newer kernels
 %ifnarch %{armx}
-Patch803:	http://ck.kolivas.org/patches/muqss/5.0/5.4/0001-MultiQueue-Skiplist-Scheduler-v0.196.patch
+#Patch803:	http://ck.kolivas.org/patches/muqss/5.0/5.4/0001-MultiQueue-Skiplist-Scheduler-v0.196.patch
 # (bero) And make it compatible with modular binder
-Patch804:	MuQSS-export-can_nice-for-binder.patch
+#Patch804:	MuQSS-export-can_nice-for-binder.patch
 %endif
 # ( crazy ) this one is adding be_silent mod parameter to acer-wmi
 # When a Unknow function is detected ( aka new ACPI interface not yet impelmeted etc )
@@ -1217,7 +1218,6 @@ $DevelRoot/crypto
 $DevelRoot/certs
 $DevelRoot/drivers
 $DevelRoot/fs
-$DevelRoot/include/Kbuild
 $DevelRoot/include/acpi
 $DevelRoot/include/asm-generic
 $DevelRoot/include/clocksource
@@ -1227,6 +1227,7 @@ $DevelRoot/include/drm
 $DevelRoot/include/dt-bindings
 $DevelRoot/include/generated
 $DevelRoot/include/keys
+$DevelRoot/include/kunit
 $DevelRoot/include/kvm
 $DevelRoot/include/linux
 $DevelRoot/include/math-emu
@@ -1749,7 +1750,6 @@ cd -
 %{_kerneldir}/drivers
 %{_kerneldir}/fs
 %{_kerneldir}/certs/*
-%{_kerneldir}/include/Kbuild
 %{_kerneldir}/include/acpi
 %{_kerneldir}/include/asm-generic
 %{_kerneldir}/include/clocksource
@@ -1757,6 +1757,7 @@ cd -
 %{_kerneldir}/include/drm
 %{_kerneldir}/include/dt-bindings
 %{_kerneldir}/include/keys
+%{_kerneldir}/include/kunit
 %{_kerneldir}/include/kvm
 %{_kerneldir}/include/linux
 %{_kerneldir}/include/math-emu
