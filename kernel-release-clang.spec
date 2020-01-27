@@ -17,8 +17,8 @@
 # This is the place where you set kernel version i.e 4.5.0
 # compose tar.xz name and release
 %define kernelversion	5
-%define patchlevel	4
-%define sublevel	15
+%define patchlevel	5
+%define sublevel	0
 %define relc		%{nil}
 # Only ever wrong on x.0 releases...
 %define previous	%{kernelversion}.%(echo $((%{patchlevel}-1)))
@@ -65,7 +65,7 @@
 # Build defines
 %bcond_with build_doc
 %ifarch %{ix86} %{x86_64}
-%bcond_without uksm
+%bcond_with uksm
 %else
 %bcond_with uksm
 %endif
@@ -297,8 +297,6 @@ Patch126:	v2-1-2-lib-Add-support-for-ZSTD-compressed-kernel.patch
 Patch127:	v2-2-2-x86-Add-support-for-ZSTD-compressed-kernel.patch
 %endif
 
-Patch133:	https://gitweb.frugalware.org/frugalware-current/raw/master/source/base/kernel/drop_ancient-and-wrong-msg.patch
-
 ### Additional hardware support
 ### TV tuners:
 # (tpg) 2019-09-23 too much warnings..
@@ -364,7 +362,6 @@ Patch403:	0105-pci-pme-wakeups.patch
 # Incompatible with UKSM
 #Patch404:	0106-ksm-wakeups.patch
 Patch405:	0107-intel_idle-tweak-cpuidle-cstates.patch
-Patch406:	0110-fs-ext4-fsync-optimize-double-fsync-a-bunch.patch
 # Not necessarily a good idea -- not all CPU cores are
 # guaranteed to be the same (e.g. big.LITTLE)
 %ifarch %{ix86} %{x86_64}
@@ -421,8 +418,6 @@ Patch902:	ix86-cant-create-dynamic-relocation-R_386_32-with-LLD.patch
 # https://github.com/ClangBuiltLinux/linux/issues/3
 Patch903:	i386-percpu.patch
 %endif
-# https://github.com/ClangBuiltLinux/linux/issues/216
-Patch904:	x86-realmode-Explicitly-set-entry-point-via-ENTRY-in-linker-script.patch
 %endif
 
 %define common_desc_kernel The kernel package contains the Linux kernel (vmlinuz), the core of your \
