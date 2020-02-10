@@ -389,7 +389,7 @@ Patch802:	https://gitweb.frugalware.org/wip_kernel/raw/23f5e50042768b823e1861315
 # disable for armx due to errors kernel/sched/MuQSS.c:7013:85: error: use of undeclared identifier 'cpu_llc_id'; did you mean 'sd_llc_id'?
 # FIXME needs porting to newer kernels
 %ifnarch %{armx}
-#Patch803:	http://ck.kolivas.org/patches/muqss/5.0/5.4/0001-MultiQueue-Skiplist-Scheduler-v0.196.patch
+Patch803:	http://ck.kolivas.org/patches/muqss/5.0/5.5/0001-MultiQueue-Skiplist-Scheduler-v0.198.patch
 # (bero) And make it compatible with modular binder
 #Patch804:	MuQSS-export-can_nice-for-binder.patch
 %endif
