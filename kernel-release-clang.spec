@@ -18,7 +18,7 @@
 # compose tar.xz name and release
 %define kernelversion	5
 %define patchlevel	5
-%define sublevel	2
+%define sublevel	4
 %define relc		%{nil}
 # Only ever wrong on x.0 releases...
 %define previous	%{kernelversion}.%(echo $((%{patchlevel}-1)))
@@ -404,6 +404,10 @@ Patch810:	linux-5.4.5-fix-build.patch
 # https://steamcommunity.com/games/221410/announcements/detail/2957094910196249305
 # https://gitlab.collabora.com/krisman/linux/commits/futex-wait-multiple-master
 Patch811:	futex-wait-multiple-5.2.1.patch
+
+Patch812:	linux-5.5-corsair-strafe-quirks.patch
+Patch813:	cpupower-gcc10.patch
+Patch814:	https://lore.kernel.org/lkml/CAMe9rOrtj-Hrr6tmSrwg_V9bawXXB2WjsSedL=aCaaH-=ZSKsA@mail.gmail.com/2-0001-x86-Don-t-declare-__force_order-in-kaslr_64.c.patch
 
 # Defines for the things that are needed for all the kernels
 #
