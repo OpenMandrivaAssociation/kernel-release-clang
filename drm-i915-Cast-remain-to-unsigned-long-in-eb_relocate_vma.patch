@@ -48,19 +48,16 @@ https://lore.kernel.org/lkml/20200211050808.29463-1-natechancellor@gmail.com/
 
  drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-index 60c984e10c4a..47f4d8ab281e 100644
---- a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-@@ -1430,7 +1430,7 @@ static int eb_relocate_vma(struct i915_execbuffer *eb, struct i915_vma *vma)
  
-    urelocs = u64_to_user_ptr(entry->relocs_ptr);
-    remain = entry->relocation_count;
+diff -Naur linux-5.5/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c linux-5.5.tpg/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
+--- linux-5.5/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c	2020-01-27 00:23:03.000000000 +0000
++++ linux-5.5.tpg/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c	2020-02-18 22:25:54.037937538 +0000
+@@ -1482,7 +1482,7 @@
+ 
+ 	urelocs = u64_to_user_ptr(entry->relocs_ptr);
+ 	remain = entry->relocation_count;
 -	if (unlikely(remain > N_RELOC(ULONG_MAX)))
 +	if (unlikely((unsigned long)remain > N_RELOC(ULONG_MAX)))
-	return -EINVAL;
+ 		return -EINVAL;
  
-    /*
--- 
-2.25.0
+ 	/*

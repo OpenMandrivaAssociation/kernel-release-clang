@@ -429,9 +429,7 @@ Patch904:	drm-i915-Cast-remain-to-unsigned-long-in-eb_relocate_vma.patch
 %define common_desc_kernel The kernel package contains the Linux kernel (vmlinuz), the core of your \
 OpenMandriva Lx operating system. The kernel handles the basic functions \
 of the operating system: memory allocation, process allocation, device \
-input and output, etc. \
-This version is a preview of an upcoming kernel version, and may be helpful if you are using \
-very current hardware.
+input and output, etc.
 
 ### Global Requires/Provides
 # do not require dracut, please it bloats dockers and other minimal instllations
@@ -719,11 +717,11 @@ Obsoletes:	%{kname}-source-latest <= %{kversion}-%{rpmrel}
 Buildarch:	noarch
 
 %description -n %{kname}-source
-The %{kname}-source package contains the source code files for the Mandriva and
-ROSA kernel. Theese source files are only needed if you want to build your own
+The %{kname}-source package contains the source code files for the OpenMandriva Lx kernel.
+Theese source files are only needed if you want to build your own
 custom kernel that is better tuned to your particular hardware.
 
-If you only want the files needed to build 3rdparty (nVidia, Ati, dkms-*,...)
+If you only want the files needed to build 3rdparty (nVidia, AMD, dkms-*,...)
 drivers against, install the *-devel rpm that is matching your kernel.
 %endif
 
