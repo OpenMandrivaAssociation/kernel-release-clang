@@ -423,6 +423,7 @@ Patch902:	ix86-cant-create-dynamic-relocation-R_386_32-with-LLD.patch
 # https://github.com/ClangBuiltLinux/linux/issues/3
 Patch903:	i386-percpu.patch
 %endif
+Patch904:	drm-i915-Cast-remain-to-unsigned-long-in-eb_relocate_vma.patch
 %endif
 
 %define common_desc_kernel The kernel package contains the Linux kernel (vmlinuz), the core of your \
