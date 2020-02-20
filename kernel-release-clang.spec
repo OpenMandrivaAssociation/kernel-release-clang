@@ -391,7 +391,7 @@ Patch802:	https://gitweb.frugalware.org/wip_kernel/raw/23f5e50042768b823e1861315
 %ifnarch %{armx}
 Patch803:	http://ck.kolivas.org/patches/muqss/5.0/5.5/0001-MultiQueue-Skiplist-Scheduler-v0.198.patch
 # (bero) And make it compatible with modular binder
-#Patch804:	MuQSS-export-can_nice-for-binder.patch
+Patch804:	MuQSS-export-can_nice-for-binder.patch
 %endif
 # ( crazy ) this one is adding be_silent mod parameter to acer-wmi
 # When a Unknow function is detected ( aka new ACPI interface not yet impelmeted etc )
