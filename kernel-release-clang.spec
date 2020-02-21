@@ -65,7 +65,7 @@
 # Build defines
 %bcond_with build_doc
 %ifarch %{ix86} %{x86_64}
-%bcond_with uksm
+%bcond_without uksm
 %else
 %bcond_with uksm
 %endif
@@ -287,7 +287,7 @@ Source112:	RFC-v3-13-13-tools-bootsplash-Add-script-and-data-to-create-sample-fi
 # (tpg) http://kerneldedup.org/en/projects/uksm/download/
 # (tpg) sources can be found here https://github.com/dolohow/uksm
 %if %{with uksm}
-Patch120:	https://raw.githubusercontent.com/dolohow/uksm/master/v5.x/uksm-5.4.patch
+Patch120:	https://raw.githubusercontent.com/dolohow/uksm/master/v5.x/uksm-5.5.patch
 %endif
 
 %if %{with build_modzstd}
@@ -391,7 +391,7 @@ Patch802:	https://gitweb.frugalware.org/wip_kernel/raw/23f5e50042768b823e1861315
 %ifnarch %{armx}
 Patch803:	http://ck.kolivas.org/patches/muqss/5.0/5.5/0001-MultiQueue-Skiplist-Scheduler-v0.198.patch
 # (bero) And make it compatible with modular binder
-#Patch804:	MuQSS-export-can_nice-for-binder.patch
+Patch804:	MuQSS-export-can_nice-for-binder.patch
 %endif
 # ( crazy ) this one is adding be_silent mod parameter to acer-wmi
 # When a Unknow function is detected ( aka new ACPI interface not yet impelmeted etc )
@@ -423,14 +423,14 @@ Patch902:	ix86-cant-create-dynamic-relocation-R_386_32-with-LLD.patch
 # https://github.com/ClangBuiltLinux/linux/issues/3
 Patch903:	i386-percpu.patch
 %endif
+Patch904:	drm-i915-Cast-remain-to-unsigned-long-in-eb_relocate_vma.patch
+Patch905:	drm-i915-perf-Reverse-a-ternary-to-make-sparse-happy.patch
 %endif
 
 %define common_desc_kernel The kernel package contains the Linux kernel (vmlinuz), the core of your \
 OpenMandriva Lx operating system. The kernel handles the basic functions \
 of the operating system: memory allocation, process allocation, device \
-input and output, etc. \
-This version is a preview of an upcoming kernel version, and may be helpful if you are using \
-very current hardware.
+input and output, etc.
 
 ### Global Requires/Provides
 # do not require dracut, please it bloats dockers and other minimal instllations
@@ -718,11 +718,11 @@ Obsoletes:	%{kname}-source-latest <= %{kversion}-%{rpmrel}
 Buildarch:	noarch
 
 %description -n %{kname}-source
-The %{kname}-source package contains the source code files for the Mandriva and
-ROSA kernel. Theese source files are only needed if you want to build your own
+The %{kname}-source package contains the source code files for the OpenMandriva Lx kernel.
+Theese source files are only needed if you want to build your own
 custom kernel that is better tuned to your particular hardware.
 
-If you only want the files needed to build 3rdparty (nVidia, Ati, dkms-*,...)
+If you only want the files needed to build 3rdparty (nVidia, AMD, dkms-*,...)
 drivers against, install the *-devel rpm that is matching your kernel.
 %endif
 
@@ -1125,7 +1125,12 @@ BuildKernel() {
 %endif
 
 %ifarch %{armx}
+%if %{with clang}
+    %{smake} ARCH=%{target_arch} HOSTCC=clang HOSTCXX=clang++ CC=clang CXX=clang++ CFLAGS="$CFLAGS" LDFLAGS="%{ldflags}" HOSTCFLAGS="%{optflags}" OBJCOPY=llvm-objcopy AR=llvm-ar NM=llvm-nm STRIP=llvm-strip OBJDUMP=llvm-objdump HOSTAR=llvm-ar V=1 dtbs INSTALL_DTBS_PATH=%{temp_boot}/dtb-$KernelVer dtbs_install
+%else
     %{smake} ARCH=%{target_arch} V=1 dtbs INSTALL_DTBS_PATH=%{temp_boot}/dtb-$KernelVer dtbs_install
+%endif
+
 %endif
 
 # remove /lib/firmware, we use a separate kernel-firmware
