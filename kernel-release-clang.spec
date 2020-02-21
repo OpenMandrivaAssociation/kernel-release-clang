@@ -1125,7 +1125,12 @@ BuildKernel() {
 %endif
 
 %ifarch %{armx}
+%if %{with clang}
+    %{smake} ARCH=%{target_arch} HOSTCC=clang HOSTCXX=clang++ CC=clang CXX=clang++ CFLAGS="$CFLAGS" LDFLAGS="%{ldflags}" HOSTCFLAGS="%{optflags}" OBJCOPY=llvm-objcopy AR=llvm-ar NM=llvm-nm STRIP=llvm-strip OBJDUMP=llvm-objdump HOSTAR=llvm-ar V=1 dtbs INSTALL_DTBS_PATH=%{temp_boot}/dtb-$KernelVer dtbs_install
+%else
     %{smake} ARCH=%{target_arch} V=1 dtbs INSTALL_DTBS_PATH=%{temp_boot}/dtb-$KernelVer dtbs_install
+%endif
+
 %endif
 
 # remove /lib/firmware, we use a separate kernel-firmware
