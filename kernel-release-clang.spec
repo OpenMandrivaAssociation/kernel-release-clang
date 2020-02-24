@@ -18,7 +18,7 @@
 # compose tar.xz name and release
 %define kernelversion	5
 %define patchlevel	5
-%define sublevel	5
+%define sublevel	6
 %define relc		%{nil}
 # Only ever wrong on x.0 releases...
 %define previous	%{kernelversion}.%(echo $((%{patchlevel}-1)))
@@ -385,10 +385,8 @@ Patch800:	Unknow-SSD-HFM128GDHTNG-8310B-QUIRK_NO_APST.patch
 # Restore ACPI loglevels to sane values
 Patch801:	https://gitweb.frugalware.org/wip_kernel/raw/86234abea5e625043153f6b8295642fd9f42bff0/source/base/kernel/acpi-use-kern_warning_even_when_error.patch
 Patch802:	https://gitweb.frugalware.org/wip_kernel/raw/23f5e50042768b823e18613151cc81b4c0cf6e22/source/base/kernel/fix-acpi_dbg_level.patch
-# (tpg) enable MuQSS CPU scheduler
-# disable for armx due to errors kernel/sched/MuQSS.c:7013:85: error: use of undeclared identifier 'cpu_llc_id'; did you mean 'sd_llc_id'?
-# FIXME needs porting to newer kernels
-%ifnarch %{armx}
+# MuQSS is potentially interesting, but right now, performs worse than regular schedulers
+%if 0
 Patch803:	http://ck.kolivas.org/patches/muqss/5.0/5.5/0001-MultiQueue-Skiplist-Scheduler-v0.198.patch
 # (bero) And make it compatible with modular binder
 Patch804:	MuQSS-export-can_nice-for-binder.patch
