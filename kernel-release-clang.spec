@@ -32,7 +32,7 @@
 %define rpmrel		0.rc%{relc}.1
 %define tar_ver   	%{kernelversion}.%{patchlevel}-rc%{relc}
 %else
-%define rpmrel		1
+%define rpmrel		99
 %define tar_ver		%{kernelversion}.%{patchlevel}
 %endif
 %define buildrpmrel	%{rpmrel}%{rpmtag}
@@ -425,6 +425,7 @@ Patch904:	drm-i915-Cast-remain-to-unsigned-long-in-eb_relocate_vma.patch
 Patch905:	drm-i915-perf-Reverse-a-ternary-to-make-sparse-happy.patch
 %endif
 
+Patch906:	PDS-linux-5.5.5.patch
 %define common_desc_kernel The kernel package contains the Linux kernel (vmlinuz), the core of your \
 OpenMandriva Lx operating system. The kernel handles the basic functions \
 of the operating system: memory allocation, process allocation, device \
