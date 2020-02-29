@@ -18,7 +18,7 @@
 # compose tar.xz name and release
 %define kernelversion	5
 %define patchlevel	5
-%define sublevel	6
+%define sublevel	7
 %define relc		%{nil}
 # Only ever wrong on x.0 releases...
 %define previous	%{kernelversion}.%(echo $((%{patchlevel}-1)))
@@ -407,8 +407,13 @@ Patch812:	linux-5.5-corsair-strafe-quirks.patch
 Patch813:	cpupower-gcc10.patch
 Patch814:	https://lore.kernel.org/lkml/CAMe9rOrtj-Hrr6tmSrwg_V9bawXXB2WjsSedL=aCaaH-=ZSKsA@mail.gmail.com/2-0001-x86-Don-t-declare-__force_order-in-kaslr_64.c.patch
 
-# Defines for the things that are needed for all the kernels
-#
+# No need to be overly verbose about something that will happen 18 years from now
+Patch850:	https://gitweb.frugalware.org/frugalware-current/blob/master/source/base/kernel/do_not_bug_the_next_18-years.patch
+# Or about iwlwifi debug bits
+Patch851:	https://gitweb.frugalware.org/frugalware-current/blob/master/source/base/kernel/iwlwifi-use-debug-for-debug-infos.patch
+# No need to be verbose about not being able to write to the IOMMU perf
+# counter (that is typically read-only on desktop hardware) either
+Patch852:	https://gitweb.frugalware.org/frugalware-current/blob/master/source/base/kernel/amd-iommu-use-pci_info.patch
 
 %if %{with clang}
 %ifarch %{armx}
