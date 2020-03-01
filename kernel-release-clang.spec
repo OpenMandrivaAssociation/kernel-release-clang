@@ -32,7 +32,7 @@
 %define rpmrel		0.rc%{relc}.1
 %define tar_ver   	%{kernelversion}.%{patchlevel}-rc%{relc}
 %else
-%define rpmrel		1
+%define rpmrel		2
 %define tar_ver		%{kernelversion}.%{patchlevel}
 %endif
 %define buildrpmrel	%{rpmrel}%{rpmtag}
@@ -317,13 +317,12 @@ Patch146:	saa716x-4.15.patch
 Patch147:	saa716x-linux-4.19.patch
 Patch148:	saa716x-5.4.patch
 
-# Lima driver for ARM Mali graphics chips
-# Generated from https://gitlab.freedesktop.org/lima/linux.git
-# using git diff v5.1..lima/lima-5.1
-# Currently no patch necessary
-
-# NOT YET
-#Patch250:	4.14-C11.patch
+# Additional WiFi drivers taken from the Endless kernel
+# git clone https://github.com/endlessm/linux.git
+# cd linux
+# tar cf extra-wifi-drivers-`date +%Y%m%d`.tar drivers/net/wireless/rtl8*
+# zstd -19 extra-wifi-drivers*.tar
+Source200:	extra-wifi-drivers-20200301.tar.zst
 
 %if %{with virtualbox}
 # VirtualBox shared folders support
@@ -905,6 +904,15 @@ git apply %{SOURCE112}
 sed -i -e '/saa7164/isource "drivers/media/pci/saa716x/Kconfig"' drivers/media/pci/Kconfig
 sed -i -e '/saa7164/iobj-$(CONFIG_SAA716X_CORE) += saa716x/' drivers/media/pci/Makefile
 find drivers/media/tuners drivers/media/dvb-frontends -name "*.c" -o -name "*.h" |xargs sed -i -e 's,"dvb_frontend.h",<media/dvb_frontend.h>,g'
+
+# Merge RTL8723DE and RTL8821CE drivers
+tar xf %{S:200}
+cd drivers/net/wireless
+sed -i -e '/quantenna\/Kconfig/asource "drivers/net/wireless/rtl8821ce/Kconfig' Kconfig
+sed -i -e '/quantenna\/Kconfig/asource "drivers/net/wireless/rtl8723de/Kconfig' Kconfig
+sed -i -e '/QUANTENNA/aobj-$(CONFIG_RTL8821CE) += rtl8821ce/' Makefile
+sed -i -e '/QUANTENNA/aobj-$(CONFIG_RTL8723DE) += rtl8723de/' Makefile
+cd -
 
 %if %{with build_debug}
 %define debug --debug
