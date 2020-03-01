@@ -323,6 +323,7 @@ Patch148:	saa716x-5.4.patch
 # tar cf extra-wifi-drivers-`date +%Y%m%d`.tar drivers/net/wireless/rtl8*
 # zstd -19 extra-wifi-drivers*.tar
 Source200:	extra-wifi-drivers-20200301.tar.zst
+Patch201:	extra-wifi-drivers-compile.patch
 
 %if %{with virtualbox}
 # VirtualBox shared folders support
@@ -882,7 +883,7 @@ done
 # End packages - here begins build stage
 #
 %prep
-%setup -q -n linux-%{tar_ver} -a 140
+%setup -q -n linux-%{tar_ver} -a 140 -a 200
 
 cp %{S:6} %{S:7} %{S:8} %{S:9} %{S:10} %{S:11} %{S:12} %{S:13} kernel/configs/
 %if 0%{sublevel}
@@ -893,7 +894,7 @@ rm -rf .git
 %if %mdvver > 3000000
 %autopatch -p1
 %else
-%autopatch -p1
+%apply_patches
 %endif
 
 %if %{with bootsplash}
@@ -906,7 +907,6 @@ sed -i -e '/saa7164/iobj-$(CONFIG_SAA716X_CORE) += saa716x/' drivers/media/pci/M
 find drivers/media/tuners drivers/media/dvb-frontends -name "*.c" -o -name "*.h" |xargs sed -i -e 's,"dvb_frontend.h",<media/dvb_frontend.h>,g'
 
 # Merge RTL8723DE and RTL8821CE drivers
-tar xf %{S:200}
 cd drivers/net/wireless
 sed -i -e '/quantenna\/Kconfig/asource "drivers/net/wireless/rtl8821ce/Kconfig' Kconfig
 sed -i -e '/quantenna\/Kconfig/asource "drivers/net/wireless/rtl8723de/Kconfig' Kconfig
