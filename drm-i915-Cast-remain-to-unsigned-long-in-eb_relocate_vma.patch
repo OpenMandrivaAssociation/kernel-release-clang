@@ -48,10 +48,9 @@ https://lore.kernel.org/lkml/20200211050808.29463-1-natechancellor@gmail.com/
 
  drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
- 
 diff -Naur linux-5.5/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c linux-5.5.tpg/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
 --- linux-5.5/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c	2020-01-27 00:23:03.000000000 +0000
-+++ linux-5.5.tpg/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c	2020-02-18 22:25:54.037937538 +0000
++++ linux-5.5.tpg/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c	2020-03-15 13:48:28.187347096 +0000
 @@ -1482,7 +1482,7 @@
  
  	urelocs = u64_to_user_ptr(entry->relocs_ptr);
