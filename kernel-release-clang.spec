@@ -1629,9 +1629,9 @@ cp -a %{temp_root} %{buildroot}
 # compress modules with Zstandard as our kmod support these
 %if %{with build_zstd}
 %ifarch %{ix86} %{armx}
-find %{target_modules} -name "*.ko" | %kxargs zstd -T0 -15 --rm -f
+find %{target_modules} -name "*.ko" | %kxargs zstd -T0 -15 -q --rm -f
 %else
-find %{target_modules} -name "*.ko" | %kxargs zstd -T0 -19 --rm -f
+find %{target_modules} -name "*.ko" | %kxargs zstd -T0 -19 -q --rm -f
 %endif
 %else
 %if %{with build_modxz}
