@@ -32,7 +32,7 @@
 %define rpmrel		0.rc%{relc}.1
 %define tar_ver   	%{kernelversion}.%{patchlevel}-rc%{relc}
 %else
-%define rpmrel		1
+%define rpmrel		2
 %define tar_ver		%{kernelversion}.%{patchlevel}
 %endif
 %define buildrpmrel	%{rpmrel}%{rpmtag}
@@ -128,14 +128,9 @@
 %bcond_with virtualbox
 %endif
 
-# (default) Enable support for Zstandard and compress modules with XZ
-# unfortunately kmod does not support Zstandard for now, so kernel modules
-# compressed with zstd will not bo loaded and system will fail
-# https://github.com/facebook/zstd/issues/1121
-# Currently only supported on x86
+# (default) Enable support for Zstandard and compress modules with Zstandard as our kmod support this compression method
 %ifarch %{ix86} %{x86_64}
 %bcond_without build_modzstd
-# compress modules with XZ
 %bcond_with build_modxz
 %else
 %bcond_with build_modzstd
@@ -413,6 +408,7 @@ Patch851:	https://gitweb.frugalware.org/frugalware-current/blob/master/source/ba
 # No need to be verbose about not being able to write to the IOMMU perf
 # counter (that is typically read-only on desktop hardware) either
 Patch852:	https://gitweb.frugalware.org/frugalware-current/blob/master/source/base/kernel/amd-iommu-use-pci_info.patch
+Patch853:	https://gitweb.frugalware.org/frugalware-current/raw/master/source/base/kernel/compress-modules-zstd-support.patch
 
 %if %{with clang}
 %ifarch %{armx}
@@ -437,8 +433,8 @@ input and output, etc.
 ### Global Requires/Provides
 # do not require dracut, please it bloats dockers and other minimal instllations
 # better solution needs to be figured out
-%define requires2 dracut >= 047
-%define requires3 kmod >= 25
+%define requires2 dracut >= 050-4
+%define requires3 kmod >= 27-3
 %define requires4 sysfsutils >=  2.1.0-12
 %define requires5 kernel-firmware
 
@@ -1107,7 +1103,7 @@ BuildKernel() {
 %ifarch %{ix86} %{armx}
     zstd -15 -q -T0 -c Module.symvers > %{temp_boot}/symvers-$KernelVer.zst
 %else
-    zstd -10 -q -T0 -c Module.symvers > %{temp_boot}/symvers-$KernelVer.zst
+    zstd -19 -q -T0 -c Module.symvers > %{temp_boot}/symvers-$KernelVer.zst
 %endif
 %endif
 
@@ -1630,9 +1626,15 @@ install -m 644 %{SOURCE4} .
 rm -rf %{buildroot}
 cp -a %{temp_root} %{buildroot}
 
-# compressing modules with XZ, even when Zstandard is used
-# (tpg) enable it when kmod will support Zstandard compressed modules
-%if %{with build_modxz} || %{with build_modzstd}
+# compress modules with Zstandard as our kmod support these
+%if %{with build_zstd}
+%ifarch %{ix86} %{armx}
+find %{target_modules} -name "*.ko" | %kxargs zstd -T0 -15 --rm -f
+%else
+find %{target_modules} -name "*.ko" | %kxargs zstd -T0 -19 --rm -f
+%endif
+%else
+%if %{with build_modxz}
 %ifarch %{ix86} %{armx}
 find %{target_modules} -name "*.ko" | %kxargs xz -5 -T0
 %else
@@ -1640,6 +1642,7 @@ find %{target_modules} -name "*.ko" | %kxargs xz -7 -T0
 %endif
 %else
 find %{target_modules} -name "*.ko" | %kxargs gzip -9
+%endif
 %endif
 
 # We used to have a copy of PrepareKernel here
