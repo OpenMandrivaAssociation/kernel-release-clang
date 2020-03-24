@@ -1357,7 +1357,7 @@ cat > $kernel_files-post <<EOF
 # create initrd/grub.cfg for installed kernel first.
 
 /sbin/depmod -a %{kversion}-$kernel_flavour-%{buildrpmrel}
-[ -e /sbin/dracut ] && /sbin/dracut-f --kver %{kversion}-$kernel_flavour-%{buildrpmrel}
+[ -x /sbin/dracut ] && /sbin/dracut -f --kver %{kversion}-$kernel_flavour-%{buildrpmrel}
 
 # try rebuild all other initrd's , however that may take a while with lots
 # kernels installed
