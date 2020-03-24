@@ -32,7 +32,7 @@
 %define rpmrel		0.rc%{relc}.1
 %define tar_ver   	%{kernelversion}.%{patchlevel}-rc%{relc}
 %else
-%define rpmrel		2
+%define rpmrel		3
 %define tar_ver		%{kernelversion}.%{patchlevel}
 %endif
 %define buildrpmrel	%{rpmrel}%{rpmtag}
@@ -1357,7 +1357,7 @@ cat > $kernel_files-post <<EOF
 # create initrd/grub.cfg for installed kernel first.
 
 /sbin/depmod -a %{kversion}-$kernel_flavour-%{buildrpmrel}
-[ -x /usr/bin/dracut ] && /usr/bin/dracut-f --kver %{kversion}-$kernel_flavour-%{buildrpmrel}
+[ -e /sbin/dracut ] && /sbin/dracut-f --kver %{kversion}-$kernel_flavour-%{buildrpmrel}
 
 # try rebuild all other initrd's , however that may take a while with lots
 # kernels installed
@@ -1374,7 +1374,7 @@ do
 		continue
 	fi
 	/sbin/depmod -a "$i"
-	[ -x /usr/bin/dracut ] && /usr/bin/dracut -f --kver "$i"
+	[ -x /sbin/dracut ] && /sbin/dracut -f --kver "$i"
 done
 
 ## cleanup some werid symlinks we never used anyway
