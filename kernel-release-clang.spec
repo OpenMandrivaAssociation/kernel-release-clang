@@ -568,7 +568,7 @@ Requires(post):	grub2 >= 2.02-27			\
 %ifnarch %armx						\
 Recommends:	cpupower				\
 Recommends:	microcode-intel				\
-Suggests:	dracut >= 047				\
+Suggests:	dracut >= 050-4				\
 %endif							\
 %ifarch %{ix86}						\
 Conflicts:	arch(x86_64)				\
@@ -1357,7 +1357,7 @@ cat > $kernel_files-post <<EOF
 # create initrd/grub.cfg for installed kernel first.
 
 /sbin/depmod -a %{kversion}-$kernel_flavour-%{buildrpmrel}
-/usr/bin/dracut -f --kver %{kversion}-$kernel_flavour-%{buildrpmrel}
+[ -x /usr/bin/dracut ] && /usr/bin/dracut-f --kver %{kversion}-$kernel_flavour-%{buildrpmrel}
 
 # try rebuild all other initrd's , however that may take a while with lots
 # kernels installed
@@ -1374,14 +1374,14 @@ do
 		continue
 	fi
 	/sbin/depmod -a "$i"
-	/usr/bin/dracut -f --kver "$i"
+	[ -x /usr/bin/dracut ] && /usr/bin/dracut -f --kver "$i"
 done
 
 ## cleanup some werid symlinks we never used anyway
 rm -rf vmlinuz-{server,desktop} initrd0.img initrd-{server,desktop}
 
 # run update-grub2
-/usr/sbin/update-grub2
+[ -x /usr/sbin/update-grub2 ] && /usr/sbin/update-grub2
 
 # (crazy) only half the story , need grub patches , OM scripts ( including ARM ) removed suport for systemd-boot
 # and so on .. we hit a limit here with lots kernels installed.
@@ -1416,11 +1416,11 @@ EOF
 
 ### Create kernel Posttrans script
 cat > $kernel_files-posttrans <<EOF
-if [ -x /usr/sbin/dkms_autoinstaller -a -d /usr/src/linux-%{kversion}-$kernel_flavour-%{buildrpmrel} ]; then
+if [ -x /usr/sbin/dkms_autoinstaller ] && [ -d /usr/src/linux-%{kversion}-$kernel_flavour-%{buildrpmrel} ]; then
     /usr/sbin/dkms_autoinstaller start %{kversion}-$kernel_flavour-%{buildrpmrel}
 fi
 
-if [ -x %{_sbindir}/dkms -a -e %{_unitdir}/dkms.service -a -d /usr/src/linux-%{kversion}-$kernel_flavour-%{buildrpmrel} ]; then
+if [ -x %{_sbindir}/dkms -a -e %{_unitdir}/dkms.service ] && [ -d /usr/src/linux-%{kversion}-$kernel_flavour-%{buildrpmrel} ]; then
     /bin/systemctl --quiet restart dkms.service
     /bin/systemctl --quiet try-restart fedora-loadmodules.service
     %{_sbindir}/dkms autoinstall --verbose --kernelver %{kversion}-$kernel_flavour-%{buildrpmrel}
