@@ -408,7 +408,7 @@ Patch851:	https://gitweb.frugalware.org/frugalware-current/blob/master/source/ba
 # No need to be verbose about not being able to write to the IOMMU perf
 # counter (that is typically read-only on desktop hardware) either
 Patch852:	https://gitweb.frugalware.org/frugalware-current/blob/master/source/base/kernel/amd-iommu-use-pci_info.patch
-Patch853:	https://gitweb.frugalware.org/frugalware-current/raw/master/source/base/kernel/compress-modules-zstd-support.patch
+#Patch853:	https://gitweb.frugalware.org/frugalware-current/raw/master/source/base/kernel/compress-modules-zstd-support.patch
 
 %if %{with clang}
 %ifarch %{armx}
