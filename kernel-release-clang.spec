@@ -18,7 +18,7 @@
 # compose tar.xz name and release
 %define kernelversion	5
 %define patchlevel	5
-%define sublevel	11
+%define sublevel	12
 %define relc		%{nil}
 # Only ever wrong on x.0 releases...
 %define previous	%{kernelversion}.%(echo $((%{patchlevel}-1)))
@@ -32,7 +32,7 @@
 %define rpmrel		0.rc%{relc}.1
 %define tar_ver   	%{kernelversion}.%{patchlevel}-rc%{relc}
 %else
-%define rpmrel		3
+%define rpmrel		1
 %define tar_ver		%{kernelversion}.%{patchlevel}
 %endif
 %define buildrpmrel	%{rpmrel}%{rpmtag}
@@ -1627,7 +1627,7 @@ rm -rf %{buildroot}
 cp -a %{temp_root} %{buildroot}
 
 # compress modules with Zstandard as our kmod support these
-%if %{with build_zstd}
+%if %{with build_modzstd}
 %ifarch %{ix86} %{armx}
 find %{target_modules} -name "*.ko" | %kxargs zstd -T0 -15 -q --rm -f
 %else
