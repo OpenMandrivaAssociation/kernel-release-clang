@@ -1363,18 +1363,18 @@ cat > $kernel_files-post <<EOF
 # kernels installed
 cd /boot > /dev/null
 
-for i in $(ls vmlinuz-[0-9]*| sed 's/.*vmlinuz-//g')
+for v in $(ls vmlinuz-[0-9]*| sed 's/.*vmlinuz-//g');
 do
-	if [[ vmlinuz-$i =~ vmlinuz-%{kversion}-$kernel_flavour-%{buildrpmrel} ]]; then
+	if [[ vmlinuz-$v =~ vmlinuz-%{kversion}-$kernel_flavour-%{buildrpmrel} ]]; then
 		# we just create this
 		continue
 	fi
-	if [[ -e "initrd-$i.img" ]]; then
+	if [ -e "initrd-$v.img" ]; then
 		## if exist ignore
 		continue
 	fi
-	/sbin/depmod -a "$i"
-	[ -x /sbin/dracut ] && /sbin/dracut -f --kver "$i"
+	/sbin/depmod -a "$v"
+	[ -x /sbin/dracut ] && /sbin/dracut -f --kver "$v"
 done
 
 ## cleanup some werid symlinks we never used anyway
@@ -1420,7 +1420,7 @@ if [ -x /usr/sbin/dkms_autoinstaller ] && [ -d /usr/src/linux-%{kversion}-$kerne
     /usr/sbin/dkms_autoinstaller start %{kversion}-$kernel_flavour-%{buildrpmrel}
 fi
 
-if [ -x %{_sbindir}/dkms -a -e %{_unitdir}/dkms.service ] && [ -d /usr/src/linux-%{kversion}-$kernel_flavour-%{buildrpmrel} ]; then
+if [ -x %{_sbindir}/dkms ] && [ -e %{_unitdir}/dkms.service ] && [ -d /usr/src/linux-%{kversion}-$kernel_flavour-%{buildrpmrel} ]; then
     /bin/systemctl --quiet restart dkms.service
     /bin/systemctl --quiet try-restart fedora-loadmodules.service
     %{_sbindir}/dkms autoinstall --verbose --kernelver %{kversion}-$kernel_flavour-%{buildrpmrel}
