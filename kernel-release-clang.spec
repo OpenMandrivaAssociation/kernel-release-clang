@@ -17,8 +17,8 @@
 # This is the place where you set kernel version i.e 4.5.0
 # compose tar.xz name and release
 %define kernelversion	5
-%define patchlevel	5
-%define sublevel	13
+%define patchlevel	6
+%define sublevel	0
 %define relc		%{nil}
 # Only ever wrong on x.0 releases...
 %define previous	%{kernelversion}.%(echo $((%{patchlevel}-1)))
@@ -32,7 +32,7 @@
 %define rpmrel		0.rc%{relc}.1
 %define tar_ver   	%{kernelversion}.%{patchlevel}-rc%{relc}
 %else
-%define rpmrel		2
+%define rpmrel		1
 %define tar_ver		%{kernelversion}.%{patchlevel}
 %endif
 %define buildrpmrel	%{rpmrel}%{rpmtag}
@@ -424,15 +424,6 @@ Patch903:	i386-percpu.patch
 Patch904:	drm-i915-Cast-remain-to-unsigned-long-in-eb_relocate_vma.patch
 Patch905:	drm-i915-perf-Reverse-a-ternary-to-make-sparse-happy.patch
 %endif
-
-
-# WireGuard VPN
-# from https://git.zx2c4.com/wireguard-linux-compat/
-# unpack tarball, currently v0.0.20200318
-# create patch with kernel-tree-scripts/create-patch.sh
-# NOTE! Dont rename the patch, as upstream WireGuard version check relies on the name
-# TTL 5.6
-Patch1000:	net-WireGuard.patch
 
 %define common_desc_kernel The kernel package contains the Linux kernel (vmlinuz), the core of your \
 OpenMandriva Lx operating system. The kernel handles the basic functions \
