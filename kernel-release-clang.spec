@@ -1358,29 +1358,9 @@ cat kernel_exclude_debug_files.$kernel_flavour >> $kernel_files
 
 ### Create kernel Post script
 cat > $kernel_files-post <<EOF
-
 # create initrd/grub.cfg for installed kernel first.
-
 /sbin/depmod -a %{kversion}-$kernel_flavour-%{buildrpmrel}
 [ -x /sbin/dracut ] && /sbin/dracut -f --kver %{kversion}-$kernel_flavour-%{buildrpmrel}
-
-# try rebuild all other initrd's , however that may take a while with lots
-# kernels installed
-cd /boot > /dev/null
-
-for v in $(ls vmlinuz-[0-9]*| sed 's/.*vmlinuz-//g');
-do
-	if [[ vmlinuz-$v =~ vmlinuz-%{kversion}-$kernel_flavour-%{buildrpmrel} ]]; then
-		# we just create this
-		continue
-	fi
-	if [ -e "initrd-$v.img" ]; then
-		## if exist ignore
-		continue
-	fi
-	/sbin/depmod -a "$v"
-	[ -x /sbin/dracut ] && /sbin/dracut -f --kver "$v"
-done
 
 ## cleanup some werid symlinks we never used anyway
 rm -rf vmlinuz-{server,desktop} initrd0.img initrd-{server,desktop}
@@ -1388,27 +1368,6 @@ rm -rf vmlinuz-{server,desktop} initrd0.img initrd-{server,desktop}
 # run update-grub2
 [ -x /usr/sbin/update-grub2 ] && /usr/sbin/update-grub2
 
-# (crazy) only half the story , need grub patches , OM scripts ( including ARM ) removed suport for systemd-boot
-# and so on .. we hit a limit here with lots kernels installed.
-# also half of that is not used bc missing grub part support. Also we produce ofc broken symlinks and ducplicate
-# 'wath-should-be-machine-id' too. I cannot see why we need that anyway.
-
-#/usr/bin/kernel-install add %{kversion}-$kernel_flavour-%{buildrpmrel} /boot/vmlinuz-%{kversion}-$kernel_flavour-%{buildrpmrel}
-#cd /boot > /dev/null
-#if [ -L vmlinuz-$kernel_flavour ]; then
-#    rm -f vmlinuz-$kernel_flavour
-#fi
-#ln -sf vmlinuz-%{kversion}-$kernel_flavour-%{buildrpmrel} vmlinuz-$kernel_flavour
-#if [ -L initrd-$kernel_flavour.img ]; then
-#    rm -f initrd-$kernel_flavour.img
-#fi
-#ln -sf initrd-%{kversion}-$kernel_flavour-%{buildrpmrel}.img initrd-$kernel_flavour.img
-#if [ -e initrd-%{kversion}-$kernel_flavour-%{buildrpmrel}.img ]; then
-#    ln -sf vmlinuz-%{kversion}-$kernel_flavour-%{buildrpmrel} vmlinuz
-#    ln -sf initrd-%{kversion}-$kernel_flavour-%{buildrpmrel}.img initrd.img
-#fi
-
-cd - > /dev/null
 %if %{with build_devel}
 # create kernel-devel symlinks if matching -devel- rpm is installed
 if [ -d /usr/src/linux-%{kversion}-$kernel_flavour-%{buildrpmrel} ]; then
@@ -1435,7 +1394,6 @@ EOF
 
 ### Create kernel Preun script on the fly
 cat > $kernel_files-preun <<EOF
-
 rm -rf /lib/modules/%{kversion}-$kernel_flavour-%{buildrpmrel}/modules.{alias{,.bin},builtin.bin,dep{,.bin},devname,softdep,symbols{,.bin}}
 cd /boot > /dev/null
 
@@ -1446,22 +1404,6 @@ fi
 if [ -e initrd-%{kversion}-$kernel_flavour-%{buildrpmrel}.img ]; then
     rm -rf initrd-%{kversion}-$kernel_flavour-%{buildrpmrel}.img
 fi
-
-
-#/usr/bin/kernel-install remove %{kversion}-$kernel_flavour-%{buildrpmrel}
-#cd /boot > /dev/null
-## (crazy) we dont use ( nor have support in grub to look ) for initrd-fooname or vmlinuz-fooname
-## so that never worked anyway.
-#if [ -L vmlinuz-$kernel_flavour ]; then
-#    if [ "$(readlink vmlinuz-$kernel_flavour)" = "vmlinuz-%{kversion}-$kernel_flavour-%{buildrpmrel}" ]; then
-#	rm -f vmlinuz-$kernel_flavour
-#    fi
-#fi
-#if [ -L initrd-$kernel_flavour.img ]; then
-#    if [ "$(readlink initrd-$kernel_flavour.img)" = "initrd-%{kversion}-$kernel_flavour-%{buildrpmrel}.img" ]; then
-#	rm -f initrd-$kernel_flavour.img
-#    fi
-#fi
 
 cd - > /dev/null
 %if %{with build_devel}
