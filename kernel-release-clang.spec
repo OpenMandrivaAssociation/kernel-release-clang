@@ -286,10 +286,14 @@ Patch120:	https://raw.githubusercontent.com/dolohow/uksm/master/v5.x/uksm-5.6.pa
 %endif
 
 %if %{with build_modzstd}
-# https://patchwork.kernel.org/patch/10003007/
-Patch126:	v2-1-2-lib-Add-support-for-ZSTD-compressed-kernel.patch
-# https://patchwork.kernel.org/patch/10003011/
-Patch127:	v2-2-2-x86-Add-support-for-ZSTD-compressed-kernel.patch
+# https://lkml.org/lkml/2020/3/25/991
+Patch126:	v3-1-8-lib-prepare-zstd-for-preboot-environment.patch
+Patch127:	v3-2-8-lib-prepare-xxhash-for-preboot-environment.patch
+Patch128:	v3-3-8-lib-add-zstd-support-to-decompress.patch
+Patch129:	v3-4-8-init-add-support-for-zstd-compressed-kernel.patch
+Patch130:	v3-5-8-usr-add-support-for-zstd-compressed-initramfs.patch
+Patch131:	v3-6-8-x86-bump-ZO_z_extra_bytes-margin-for-zstd.patch
+Patch132:	v3-7-8-x86-Add-support-for-ZSTD-compressed-kernel.patch
 %endif
 
 ### Additional hardware support
