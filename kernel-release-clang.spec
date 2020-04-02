@@ -325,11 +325,6 @@ Source200:	extra-wifi-drivers-20200301.tar.zst
 Patch201:	extra-wifi-drivers-compile.patch
 
 %if %{with virtualbox}
-# VirtualBox shared folders support
-# https://patchwork.kernel.org/patch/10906949/
-# For newer versions, check
-# https://patchwork.kernel.org/project/linux-fsdevel/list/?submitter=582
-Patch300:	v19-fs-Add-VirtualBox-guest-shared-folder-vboxsf-support.diff
 Source300:	virtualbox-kernel-5.3.patch
 Source301:	vbox-6.1-fix-build-on-znver1-hosts.patch
 Source302:	vbox-6.1.2-clang.patch
@@ -360,13 +355,15 @@ Patch401:	0103-Increase-the-ext4-default-commit-age.patch
 Patch403:	0105-pci-pme-wakeups.patch
 # Incompatible with UKSM
 #Patch404:	0106-ksm-wakeups.patch
-Patch405:	0107-intel_idle-tweak-cpuidle-cstates.patch
+# waiting for rediff ?
+#Patch405:	0107-intel_idle-tweak-cpuidle-cstates.patch
 # Not necessarily a good idea -- not all CPU cores are
 # guaranteed to be the same (e.g. big.LITTLE)
 %ifarch %{ix86} %{x86_64}
 Patch407:	0114-smpboot-reuse-timer-calibration.patch
 %endif
-Patch408:	0109-raid6-add-Kconfig-option-to-skip-raid6-benchmarking.patch
+# waiting for rediff ?
+#Patch408:	0109-raid6-add-Kconfig-option-to-skip-raid6-benchmarking.patch
 Patch409:	0116-Initialize-ata-before-graphics.patch
 Patch410:	0119-e1000e-change-default-policy.patch
 Patch411:	0112-give-rdrand-some-credit.patch
@@ -403,7 +400,6 @@ Patch810:	linux-5.4.5-fix-build.patch
 Patch811:	futex-wait-multiple-5.2.1.patch
 
 Patch812:	linux-5.5-corsair-strafe-quirks.patch
-Patch813:	cpupower-gcc10.patch
 
 # No need to be overly verbose about something that will happen 18 years from now
 Patch850:	https://gitweb.frugalware.org/frugalware-current/blob/master/source/base/kernel/do_not_bug_the_next_18-years.patch
@@ -426,7 +422,6 @@ Patch902:	ix86-cant-create-dynamic-relocation-R_386_32-with-LLD.patch
 Patch903:	i386-percpu.patch
 %endif
 Patch904:	drm-i915-Cast-remain-to-unsigned-long-in-eb_relocate_vma.patch
-Patch905:	drm-i915-perf-Reverse-a-ternary-to-make-sparse-happy.patch
 %endif
 
 %define common_desc_kernel The kernel package contains the Linux kernel (vmlinuz), the core of your \
@@ -457,7 +452,7 @@ input and output, etc.
 %define kconflicts5 dkms-nvidia304 < 304.108-1
 %define kconflicts6 fuse-exfat < 1.3.0.-6
 # nvidia173 does not support this kernel
-
+%if 0
 Autoreqprov:	no
 %if %{with build_modzstd}
 BuildRequires:	zstd
@@ -535,6 +530,7 @@ Suggests:	microcode-intel
 %if %{with virtualbox}
 BuildRequires:	virtualbox-kernel-module-sources
 BuildRequires:	virtualbox-guest-kernel-module-sources
+%endif
 %endif
 
 %description

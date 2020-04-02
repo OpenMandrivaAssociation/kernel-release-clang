@@ -1,6 +1,6 @@
-From	Nick Terrell <>
-Subject	[PATCH v3 5/8] usr: add support for zstd compressed initramfs
-Date	Wed, 25 Mar 2020 12:58:46 -0700
+From    Nick Terrell <>
+Subject [PATCH v3 5/8] usr: add support for zstd compressed initramfs
+Date    Wed, 25 Mar 2020 12:58:46 -0700
 share
 From: Nick Terrell <terrelln@fb.com>
 
@@ -22,17 +22,15 @@ device we saw a 9 second boot time reduction from switching from xz to
 zstd.
 
 Signed-off-by: Nick Terrell <terrelln@fb.com>
-
 ---
  usr/Kconfig  | 20 ++++++++++++++++++++
  usr/Makefile |  1 +
  2 files changed, 21 insertions(+)
 
-diff --git a/usr/Kconfig b/usr/Kconfig
-index bdf5bbd40727..43aca37d09b5 100644
---- a/usr/Kconfig
-+++ b/usr/Kconfig
-@@ -100,6 +100,15 @@ config RD_LZ4
+diff -Naur a/usr/Kconfig b/usr/Kconfig
+--- a/usr/Kconfig	2020-03-29 22:25:41.000000000 +0000
++++ b/usr/Kconfig	2020-04-02 23:28:00.634293312 +0000
+@@ -100,6 +100,15 @@
  	  Support loading of a LZ4 encoded initial ramdisk or cpio buffer
  	  If unsure, say N.
  
@@ -42,13 +40,13 @@ index bdf5bbd40727..43aca37d09b5 100644
 +	depends on BLK_DEV_INITRD
 +	select DECOMPRESS_ZSTD
 +	help
-+	  Support loading of a ZSTD encoded initial ramdisk or cpio buffer.
++	 Support loading of a ZSTD encoded initial ramdisk or cpio buffer.
 +	  If unsure, say N.
 +
  choice
  	prompt "Built-in initramfs compression mode"
  	depends on INITRAMFS_SOURCE != ""
-@@ -207,4 +216,15 @@ config INITRAMFS_COMPRESSION_LZ4
+@@ -196,6 +205,17 @@
  	  If you choose this, keep in mind that most distros don't provide lz4
  	  by default which could cause a build failure.
  
@@ -63,12 +61,13 @@ index bdf5bbd40727..43aca37d09b5 100644
 +	  If you choose this, keep in mind that you may need to install the zstd
 +	  tool to be able to compress the initram.
 +
- endchoice
-diff --git a/usr/Makefile b/usr/Makefile
-index c12e6b15ce72..b1a81a40eab1 100644
---- a/usr/Makefile
-+++ b/usr/Makefile
-@@ -15,6 +15,7 @@ compress-$(CONFIG_INITRAMFS_COMPRESSION_LZMA)	:= lzma
+ config INITRAMFS_COMPRESSION_NONE
+ 	bool "None"
+ 	help
+diff -Naur a/usr/Makefile b/usr/Makefile
+--- a/usr/Makefile	2020-03-29 22:25:41.000000000 +0000
++++ b/usr/Makefile	2020-04-02 23:28:21.302441204 +0000
+@@ -15,6 +15,7 @@
  compress-$(CONFIG_INITRAMFS_COMPRESSION_XZ)	:= xzmisc
  compress-$(CONFIG_INITRAMFS_COMPRESSION_LZO)	:= lzo
  compress-$(CONFIG_INITRAMFS_COMPRESSION_LZ4)	:= lz4
@@ -76,7 +75,5 @@ index c12e6b15ce72..b1a81a40eab1 100644
  
  obj-$(CONFIG_BLK_DEV_INITRD) := initramfs_data.o
  
--- 
+--- 
 2.25.1
-
-  
