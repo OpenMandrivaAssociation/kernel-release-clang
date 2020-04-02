@@ -452,7 +452,7 @@ input and output, etc.
 %define kconflicts5 dkms-nvidia304 < 304.108-1
 %define kconflicts6 fuse-exfat < 1.3.0.-6
 # nvidia173 does not support this kernel
-%if 0
+
 Autoreqprov:	no
 %if %{with build_modzstd}
 BuildRequires:	zstd
@@ -530,7 +530,6 @@ Suggests:	microcode-intel
 %if %{with virtualbox}
 BuildRequires:	virtualbox-kernel-module-sources
 BuildRequires:	virtualbox-guest-kernel-module-sources
-%endif
 %endif
 
 %description
