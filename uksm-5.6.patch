@@ -147,7 +147,7 @@ index e48b1e453ff5..095d59310ce0 100644
 +++ b/include/linux/ksm.h
 @@ -1,4 +1,4 @@
 -/* SPDX-License-Identifier: GPL-2.0 */
-+/* SPDX-License-Identifier: GPL-3.0 */
++/* SPDX-License-Identifier: GPL-2.0 */
  #ifndef __LINUX_KSM_H
  #define __LINUX_KSM_H
  /*
