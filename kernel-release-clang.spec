@@ -4,9 +4,6 @@
 #end
 %define _disable_ld_no_undefined 1
 
-# (tpg) try to speed up things
-%global optflags %{optflags} -O3
-
 # (crazy) , well that new way of doing buil-id symlinks
 # does not seems to work, see:
 # https://issues.openmandriva.org/show_bug.cgi?id=2400
@@ -24,7 +21,7 @@
 %define previous	%{kernelversion}.%(echo $((%{patchlevel}-1)))
 
 %define buildrel	%{kversion}-%{buildrpmrel}
-%define rpmtag	%{disttag}
+%define rpmtag		%{disttag}
 
 # IMPORTANT
 # This is the place where you set release version %{version}-1omv2015
@@ -75,7 +72,13 @@
 
 %bcond_without clang
 
-%bcond_with bootsplash
+## enabled it runs dracut -f --regenerate-all
+## we *should* enable that, is bc we keep or can keep lots
+## kernel around and the initrd is created using sys libs, sys configs,
+## *systemd* service & apps etc. IOW, a old initrd may have old files, libs, etc
+## changed since last rebuild and may result in either broken boot, or very hard to debug bugs.
+%bcond_with dracut_all_initrd
+
 # (tpg) enable patches from ClearLinux
 %bcond_without clr
 
@@ -232,6 +235,7 @@ Source51:	cpupower.config
 %if 0%{sublevel}
 Source90:	https://cdn.kernel.org/pub/linux/kernel/v%(echo %{version}|cut -d. -f1).x/patch-%{version}.xz
 %endif
+Patch1:		linux-5.6-fix-disassembler-4args-detection.patch
 Patch2:		die-floppy-die.patch
 Patch3:		0001-Add-support-for-Acer-Predator-macro-keys.patch
 Patch4:		linux-4.7-intel-dvi-duallink.patch
@@ -240,39 +244,6 @@ Patch6:		linux-5.2.9-riscv-compile.patch
 # error: Illegal char ']' (0x5d) in: 1.2.1[50983]_custom
 # caused by aacraid versioning ("1.2.1[50983]-custom")
 Patch7:		aacraid-dont-freak-out-dependency-generator.patch
-
-# Bootsplash system
-# (tpg) disable it for now 2018-11-07
-%if %{with bootsplash}
-# https://lkml.org/lkml/2017/10/25/346
-# https://patchwork.kernel.org/patch/10172665/, rebased
-Patch100:	RFC-v3-01-13-bootsplash-Initial-implementation-showing-black-screen.patch
-# https://patchwork.kernel.org/patch/10172669/
-Patch101:	RFC-v3-02-13-bootsplash-Add-file-reading-and-picture-rendering.patch
-# https://patchwork.kernel.org/patch/10172715/
-Patch102:	RFC-v3-03-13-bootsplash-Flush-framebuffer-after-drawing.patch
-# https://patchwork.kernel.org/patch/10172699/
-Patch103:	RFC-v3-04-13-bootsplash-Add-corner-positioning.patch
-# https://patchwork.kernel.org/patch/10172667/
-Patch104:	RFC-v3-05-13-bootsplash-Add-animation-support.patch
-# https://patchwork.kernel.org/patch/10172605/, rebased
-Patch105:	RFC-v3-06-13-vt-Redraw-bootsplash-fully-on-console_unblank.patch
-# https://patchwork.kernel.org/patch/10172599/
-Patch106:	RFC-v3-07-13-vt-Add-keyboard-hook-to-disable-bootsplash.patch
-# https://patchwork.kernel.org/patch/10172603/
-Patch107:	RFC-v3-08-13-sysrq-Disable-bootsplash-on-SAK.patch
-# https://patchwork.kernel.org/patch/10172601/
-Patch108:	RFC-v3-09-13-fbcon-Disable-bootsplash-on-oops.patch
-# https://patchwork.kernel.org/patch/10172663/
-Patch109:	RFC-v3-10-13-Documentation-Add-bootsplash-main-documentation.patch
-# https://patchwork.kernel.org/patch/10172685/
-Patch110:	RFC-v3-11-13-bootsplash-sysfs-entries-to-load-and-unload-files.patch
-# https://patchwork.kernel.org/patch/10172597/
-Patch111:	RFC-v3-12-13-tools-bootsplash-Add-a-basic-splash-file-creation-tool.patch
-# https://patchwork.kernel.org/patch/10172661/
-# Contains git binary patch -- needs to be applied with git apply instead of autopatch -p1
-Source112:	RFC-v3-13-13-tools-bootsplash-Add-script-and-data-to-create-sample-file.patch
-%endif
 
 # Patches to VirtualBox and other external modules are
 # pulled in as Source: rather than Patch: because it's arch specific
@@ -323,9 +294,13 @@ Patch148:	saa716x-5.4.patch
 # zstd -19 extra-wifi-drivers*.tar
 Source200:	extra-wifi-drivers-20200301.tar.zst
 Patch201:	extra-wifi-drivers-compile.patch
+Patch202:	extra-wifi-drivers-port-to-5.6.patch
 
 %if %{with virtualbox}
-Source300:	virtualbox-kernel-5.3.patch
+# VirtualBox patches -- added as Source: rather than Patch:
+# because they need to be applied after stuff from the
+# virtualbox-kernel-module-sources package is copied around
+Source300:	vbox-kernel-5.6.patch
 Source301:	vbox-6.1-fix-build-on-znver1-hosts.patch
 Source302:	vbox-6.1.2-clang.patch
 %endif
@@ -355,8 +330,7 @@ Patch401:	0103-Increase-the-ext4-default-commit-age.patch
 Patch403:	0105-pci-pme-wakeups.patch
 # Incompatible with UKSM
 #Patch404:	0106-ksm-wakeups.patch
-# waiting for rediff ?
-#Patch405:	0107-intel_idle-tweak-cpuidle-cstates.patch
+Patch405:	0107-intel_idle-tweak-cpuidle-cstates.patch
 # Not necessarily a good idea -- not all CPU cores are
 # guaranteed to be the same (e.g. big.LITTLE)
 %ifarch %{ix86} %{x86_64}
@@ -506,10 +480,7 @@ BuildRequires:	asciidoc
 BuildRequires:	pkgconfig(audit)
 BuildRequires:	binutils-devel
 BuildRequires:	bison
-# BuildRequires:	docbook-style-xsl
 BuildRequires:	flex
-# BuildRequires:	gettext
-# BuildRequires:	gtk2-devel
 BuildRequires:	pkgconfig(libunwind)
 BuildRequires:	pkgconfig(libnewt)
 BuildRequires:	pkgconfig(gtk+-2.0)
@@ -682,7 +653,7 @@ voluntary preempt, CFS cpu scheduler and BFQ i/o scheduler, ONDEMAND governor.
 %define summary_server_clang Linux Kernel for server use with i686 & 64GB RAM
 %define info_server This kernel is compiled for server use, single or \
 multiple i686 processor(s)/core(s) and up to 64GB RAM using PAE, using \
-no preempt, HZ_100, CFS cpu scheduler and BFQ i/o scheduler, PERFORMANCE governor.
+no preempt, HZ_300, CFS cpu scheduler and BFQ i/o scheduler, PERFORMANCE governor.
 %else
 %define summary_server_clang Linux Kernel for server use with %{_arch}
 %define info_server This kernel is compiled for server use, single or \
@@ -785,15 +756,6 @@ Conflicts:	%{_lib}cpufreq-devel
 This package contains the development files for cpupower.
 %endif
 
-%package -n bootsplash-packer
-Summary:	Tool for packing bootsplash images
-Group:		System/Kernel and hardware
-Version:	%{kversion}
-Release:	%{rpmrel}
-
-%description -n bootsplash-packer
-Tool for packing bootsplash images.
-
 %if %{with build_x86_energy_perf_policy}
 %package -n x86_energy_perf_policy
 Version:	%{kversion}
@@ -892,10 +854,6 @@ rm -rf .git
 %apply_patches
 %endif
 
-%if %{with bootsplash}
-git apply %{SOURCE112}
-%endif
-
 # merge SAA716x DVB driver from extra tarball
 sed -i -e '/saa7164/isource "drivers/media/pci/saa716x/Kconfig"' drivers/media/pci/Kconfig
 sed -i -e '/saa7164/iobj-$(CONFIG_SAA716X_CORE) += saa716x/' drivers/media/pci/Makefile
@@ -977,7 +935,7 @@ cp -a $(ls --sort=time -1d /usr/src/virtualbox-*|head -n1)/vboxpci drivers/pci/
 sed -i -e 's,\$(KBUILD_EXTMOD),drivers/pci/vboxpci,g' drivers/pci/vboxpci/Makefile*
 sed -i -e "s,^KERN_DIR.*,KERN_DIR := $(pwd)," drivers/pci/vboxpci/Makefile*
 echo 'obj-m += vboxpci/' >>drivers/pci/Makefile
-#patch -p1 -z .300a~ -b <%{S:300}
+patch -p1 -z .300a~ -b <%{S:300}
 patch -p1 -z .301a~ -b <%{S:301}
 patch -p1 -z .302a~ -b <%{S:302}
 %endif
@@ -1187,9 +1145,6 @@ SaveDevel() {
 # Needed for external dvb tree (#41418)
     cp -fR drivers/media/dvb-frontends/lgdt330x.h $TempDevelRoot/drivers/media/dvb-frontends/
 
-# add acpica header files, needed for fglrx build
-    cp -fR drivers/acpi/acpica/*.h $TempDevelRoot/drivers/acpi/acpica/
-
 # orc unwinder needs theese
     cp -fR tools/build/Build{,.include} $TempDevelRoot/tools/build
     cp -fR tools/build/fixdep.c $TempDevelRoot/tools/build
@@ -1291,7 +1246,6 @@ if [ -d /lib/modules/%{kversion}-$devel_flavour-%{buildrpmrel} ]; then
 fi
 EOF
 
-
 ### Create -devel Preun script on the fly
 cat > $kernel_devel_files-preun <<EOF
 if [ -L /lib/modules/%{kversion}-$devel_flavour-%{buildrpmrel}/build ]; then
@@ -1353,16 +1307,20 @@ cat kernel_exclude_debug_files.$kernel_flavour >> $kernel_files
 
 ### Create kernel Post script
 cat > $kernel_files-post <<EOF
-# create initrd/grub.cfg for installed kernel first.
+%if %{with dracut_all_initrd}
+[ -x /sbin/dracut ] && /sbin/dracut -f --regenerate-all
+%endif
+
 /sbin/depmod -a %{kversion}-$kernel_flavour-%{buildrpmrel}
 [ -x /sbin/dracut ] && /sbin/dracut -f --kver %{kversion}-$kernel_flavour-%{buildrpmrel}
 
 ## cleanup some werid symlinks we never used anyway
-rm -rf vmlinuz-{server,desktop} initrd0.img initrd-{server,desktop}
+rm -rf vmlinuz-{server,desktop} initrd0.img initrd-{server,desktop} ||:
 
 # run update-grub2
 [ -x /usr/sbin/update-grub2 ] && /usr/sbin/update-grub2
 
+cd - > /dev/null
 %if %{with build_devel}
 # create kernel-devel symlinks if matching -devel- rpm is installed
 if [ -d /usr/src/linux-%{kversion}-$kernel_flavour-%{buildrpmrel} ]; then
@@ -1381,10 +1339,9 @@ fi
 
 if [ -x %{_sbindir}/dkms ] && [ -e %{_unitdir}/dkms.service ] && [ -d /usr/src/linux-%{kversion}-$kernel_flavour-%{buildrpmrel} ]; then
     /bin/systemctl --quiet restart dkms.service
-    /bin/systemctl --quiet try-restart fedora-loadmodules.service
+    /bin/systemctl --quiet try-restart loadmodules.service
     %{_sbindir}/dkms autoinstall --verbose --kernelver %{kversion}-$kernel_flavour-%{buildrpmrel}
 fi
-
 EOF
 
 ### Create kernel Preun script on the fly
@@ -1529,10 +1486,6 @@ chmod +x tools/power/cpupower/utils/version-gen.sh
 %kmake -C tools/power/cpupower CPUFREQ_BENCH=false LDFLAGS="%{optflags}"
 %endif
 
-%if %{with bootsplash}
-%kmake -C tools/bootsplash LDFLAGS="%{optflags}"
-%endif
-
 %ifarch %{ix86} %{x86_64}
 %if %{with build_x86_energy_perf_policy}
 %kmake -C tools/power/x86/x86_energy_perf_policy CC=%{__cc} LDFLAGS="%{optflags} -Wl,--build-id=none"
@@ -1625,11 +1578,6 @@ chmod 0755 %{buildroot}%{_libdir}/libcpupower.so*
 mkdir -p %{buildroot}%{_unitdir} %{buildroot}%{_sysconfdir}/sysconfig
 install -m644 %{SOURCE50} %{buildroot}%{_unitdir}/cpupower.service
 install -m644 %{SOURCE51} %{buildroot}%{_sysconfdir}/sysconfig/cpupower
-%endif
-
-%if %{with bootsplash}
-mkdir -p %{buildroot}%{_bindir}
-install -m755 tools/bootsplash/bootsplash-packer %{buildroot}%{_bindir}/
 %endif
 
 %ifarch %{ix86} %{x86_64}
@@ -1798,11 +1746,6 @@ cd -
 %files -n cpupower-devel
 %{_libdir}/libcpupower.so
 %{_includedir}/cpufreq.h
-%endif
-
-%if %{with bootsplash}
-%files -n bootsplash-packer
-%{_bindir}/bootsplash-packer
 %endif
 
 %ifarch %{ix86} %{x86_64}
