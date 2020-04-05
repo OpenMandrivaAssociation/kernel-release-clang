@@ -409,7 +409,7 @@ input and output, etc.
 # do not require dracut, please it bloats dockers and other minimal instllations
 # better solution needs to be figured out
 %define requires2 dracut >= 050-4
-%define requires3 kmod >= 27-3
+%define requires3 kmod >= 26-2
 %define requires4 sysfsutils >=  2.1.0-12
 %define requires5 kernel-firmware
 
