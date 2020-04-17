@@ -1321,7 +1321,6 @@ rm -rf vmlinuz-{server,desktop} initrd0.img initrd-{server,desktop} ||:
 # run update-grub2
 [ -x /usr/sbin/update-grub2 ] && /usr/sbin/update-grub2
 
-cd - > /dev/null
 %if %{with build_devel}
 # create kernel-devel symlinks if matching -devel- rpm is installed
 if [ -d /usr/src/linux-%{kversion}-$kernel_flavour-%{buildrpmrel} ]; then
@@ -1358,7 +1357,6 @@ if [ -e initrd-%{kversion}-$kernel_flavour-%{buildrpmrel}.img ]; then
     rm -rf initrd-%{kversion}-$kernel_flavour-%{buildrpmrel}.img
 fi
 
-cd - > /dev/null
 %if %{with build_devel}
 if [ -L /lib/modules/%{kversion}-$kernel_flavour-%{buildrpmrel}/build ]; then
     rm -f /lib/modules/%{kversion}-$kernel_flavour-%{buildrpmrel}/build
