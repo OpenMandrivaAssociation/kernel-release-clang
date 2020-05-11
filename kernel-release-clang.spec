@@ -118,13 +118,7 @@
 %bcond_with build_cpupower
 %endif
 
-# (tpg) Virtualbox module makes sens only on ix86 and x86_64
-# 2019-09-23
-# BUILDSTDERR: In file included from drivers/net/vboxnetadp/linux/VBoxNetAdp-linux.c:31:
-# BUILDSTDERR: drivers/net/vboxnetadp/r0drv/linux/the-linux-kernel.h:46:34: error: unknown warning group '-Wold-style-declaration', ignored [-Werror,-Wunknown-warning-option]
-# BUILDSTDERR: #  pragma GCC diagnostic ignored "-Wold-style-declaration" /* 2.6.18-411.0.0.0.1.el5/build/include/asm/apic.h:110: warning: 'inline' is not at beginning of declaration [-Wold-style-declaration] */
-# BUILDSTDERR:                                  ^
-# BUILDSTDERR: 1 error generated.
+# (tpg) Virtualbox module makes sense only on x86_64
 %ifarch %{x86_64}
 %bcond_without virtualbox
 %else
@@ -301,7 +295,6 @@ Patch202:	extra-wifi-drivers-port-to-5.6.patch
 # VirtualBox patches -- added as Source: rather than Patch:
 # because they need to be applied after stuff from the
 # virtualbox-kernel-module-sources package is copied around
-Source300:	vbox-kernel-5.6.patch
 Source301:	vbox-6.1-fix-build-on-znver1-hosts.patch
 Source302:	vbox-6.1.2-clang.patch
 %endif
@@ -934,7 +927,6 @@ cp -a $(ls --sort=time -1d /usr/src/virtualbox-*|head -n1)/vboxpci drivers/pci/
 sed -i -e 's,\$(KBUILD_EXTMOD),drivers/pci/vboxpci,g' drivers/pci/vboxpci/Makefile*
 sed -i -e "s,^KERN_DIR.*,KERN_DIR := $(pwd)," drivers/pci/vboxpci/Makefile*
 echo 'obj-m += vboxpci/' >>drivers/pci/Makefile
-patch -p1 -z .300a~ -b <%{S:300}
 patch -p1 -z .301a~ -b <%{S:301}
 patch -p1 -z .302a~ -b <%{S:302}
 %endif
