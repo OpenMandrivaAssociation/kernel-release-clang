@@ -430,7 +430,6 @@ input and output, etc.
 %define kconflicts4 dkms-nvidia-long-lived < 319.49-1
 %define kconflicts5 dkms-nvidia304 < 304.108-1
 # nvidia173 does not support this kernel
-
 Autoreqprov:	no
 %if %{with build_modzstd}
 BuildRequires:	zstd
