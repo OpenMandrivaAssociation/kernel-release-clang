@@ -15,7 +15,7 @@
 # compose tar.xz name and release
 %define kernelversion	5
 %define patchlevel	6
-%define sublevel	2
+%define sublevel	12
 %define relc		%{nil}
 # Only ever wrong on x.0 releases...
 %define previous	%{kernelversion}.%(echo $((%{patchlevel}-1)))
@@ -118,13 +118,7 @@
 %bcond_with build_cpupower
 %endif
 
-# (tpg) Virtualbox module makes sens only on ix86 and x86_64
-# 2019-09-23
-# BUILDSTDERR: In file included from drivers/net/vboxnetadp/linux/VBoxNetAdp-linux.c:31:
-# BUILDSTDERR: drivers/net/vboxnetadp/r0drv/linux/the-linux-kernel.h:46:34: error: unknown warning group '-Wold-style-declaration', ignored [-Werror,-Wunknown-warning-option]
-# BUILDSTDERR: #  pragma GCC diagnostic ignored "-Wold-style-declaration" /* 2.6.18-411.0.0.0.1.el5/build/include/asm/apic.h:110: warning: 'inline' is not at beginning of declaration [-Wold-style-declaration] */
-# BUILDSTDERR:                                  ^
-# BUILDSTDERR: 1 error generated.
+# (tpg) Virtualbox module makes sense only on x86_64
 %ifarch %{x86_64}
 %bcond_without virtualbox
 %else
@@ -257,7 +251,6 @@ Patch7:		aacraid-dont-freak-out-dependency-generator.patch
 %if %{with uksm}
 Patch120:	https://raw.githubusercontent.com/dolohow/uksm/master/v5.x/uksm-5.6.patch
 %endif
-
 %if %{with build_modzstd}
 # https://lkml.org/lkml/2020/3/25/991
 Patch126:	v3-1-8-lib-prepare-zstd-for-preboot-environment.patch
@@ -302,7 +295,6 @@ Patch202:	extra-wifi-drivers-port-to-5.6.patch
 # VirtualBox patches -- added as Source: rather than Patch:
 # because they need to be applied after stuff from the
 # virtualbox-kernel-module-sources package is copied around
-Source300:	vbox-kernel-5.6.patch
 Source301:	vbox-6.1-fix-build-on-znver1-hosts.patch
 Source302:	vbox-6.1.2-clang.patch
 %endif
@@ -338,8 +330,7 @@ Patch405:	0107-intel_idle-tweak-cpuidle-cstates.patch
 %ifarch %{ix86} %{x86_64}
 Patch407:	0114-smpboot-reuse-timer-calibration.patch
 %endif
-# waiting for rediff ?
-#Patch408:	0109-raid6-add-Kconfig-option-to-skip-raid6-benchmarking.patch
+Patch408:	0109-raid6-add-Kconfig-option-to-skip-raid6-benchmarking.patch
 Patch409:	0116-Initialize-ata-before-graphics.patch
 Patch410:	0119-e1000e-change-default-policy.patch
 Patch411:	0112-give-rdrand-some-credit.patch
@@ -347,6 +338,11 @@ Patch412:	0120-ipv4-tcp-allow-the-memory-tuning-for-tcp-to-go-a-lit.patch
 Patch413:	0124-kernel-time-reduce-ntp-wakeups.patch
 Patch414:	0125-init-wait-for-partition-and-retry-scan.patch
 Patch415:	0120-Migrate-some-systemd-defaults-to-the-kernel-defaults.patch
+Patch416:	0121-use-lfence-instead-of-rep-and-nop.patch
+Patch417:	0122-do-accept-in-LIFO-order-for-cache-efficiency.patch
+Patch418:	0123-locking-rwsem-spin-faster.patch
+Patch419:	0124-ata-libahci-ignore-staggered-spin-up.patch
+Patch420:	0131-overload-on-wakeup.patch
 %endif
 
 # (crazy) see: https://forum.openmandriva.org/t/nvme-ssd-m2-not-seen-by-omlx-4-0/2407
@@ -427,7 +423,6 @@ input and output, etc.
 %define kconflicts4 dkms-nvidia-long-lived < 319.49-1
 %define kconflicts5 dkms-nvidia304 < 304.108-1
 # nvidia173 does not support this kernel
-
 Autoreqprov:	no
 %if %{with build_modzstd}
 BuildRequires:	zstd
@@ -849,11 +844,7 @@ cp %{S:6} %{S:7} %{S:8} %{S:9} %{S:10} %{S:11} %{S:12} %{S:13} kernel/configs/
 xzcat %{SOURCE90} |git apply - || git apply %{SOURCE90}
 rm -rf .git
 %endif
-%if %mdvver > 3000000
 %autopatch -p1
-%else
-%apply_patches
-%endif
 
 # merge SAA716x DVB driver from extra tarball
 sed -i -e '/saa7164/isource "drivers/media/pci/saa716x/Kconfig"' drivers/media/pci/Kconfig
@@ -936,7 +927,6 @@ cp -a $(ls --sort=time -1d /usr/src/virtualbox-*|head -n1)/vboxpci drivers/pci/
 sed -i -e 's,\$(KBUILD_EXTMOD),drivers/pci/vboxpci,g' drivers/pci/vboxpci/Makefile*
 sed -i -e "s,^KERN_DIR.*,KERN_DIR := $(pwd)," drivers/pci/vboxpci/Makefile*
 echo 'obj-m += vboxpci/' >>drivers/pci/Makefile
-patch -p1 -z .300a~ -b <%{S:300}
 patch -p1 -z .301a~ -b <%{S:301}
 patch -p1 -z .302a~ -b <%{S:302}
 %endif
@@ -1321,7 +1311,6 @@ rm -rf vmlinuz-{server,desktop} initrd0.img initrd-{server,desktop} ||:
 # run update-grub2
 [ -x /usr/sbin/update-grub2 ] && /usr/sbin/update-grub2
 
-cd - > /dev/null
 %if %{with build_devel}
 # create kernel-devel symlinks if matching -devel- rpm is installed
 if [ -d /usr/src/linux-%{kversion}-$kernel_flavour-%{buildrpmrel} ]; then
@@ -1358,7 +1347,6 @@ if [ -e initrd-%{kversion}-$kernel_flavour-%{buildrpmrel}.img ]; then
     rm -rf initrd-%{kversion}-$kernel_flavour-%{buildrpmrel}.img
 fi
 
-cd - > /dev/null
 %if %{with build_devel}
 if [ -L /lib/modules/%{kversion}-$kernel_flavour-%{buildrpmrel}/build ]; then
     rm -f /lib/modules/%{kversion}-$kernel_flavour-%{buildrpmrel}/build
