@@ -15,7 +15,7 @@
 # compose tar.xz name and release
 %define kernelversion	5
 %define patchlevel	6
-%define sublevel	6
+%define sublevel	12
 %define relc		%{nil}
 # Only ever wrong on x.0 releases...
 %define previous	%{kernelversion}.%(echo $((%{patchlevel}-1)))
@@ -338,8 +338,7 @@ Patch405:	0107-intel_idle-tweak-cpuidle-cstates.patch
 %ifarch %{ix86} %{x86_64}
 Patch407:	0114-smpboot-reuse-timer-calibration.patch
 %endif
-# waiting for rediff ?
-#Patch408:	0109-raid6-add-Kconfig-option-to-skip-raid6-benchmarking.patch
+Patch408:	0109-raid6-add-Kconfig-option-to-skip-raid6-benchmarking.patch
 Patch409:	0116-Initialize-ata-before-graphics.patch
 Patch410:	0119-e1000e-change-default-policy.patch
 Patch411:	0112-give-rdrand-some-credit.patch
@@ -347,6 +346,11 @@ Patch412:	0120-ipv4-tcp-allow-the-memory-tuning-for-tcp-to-go-a-lit.patch
 Patch413:	0124-kernel-time-reduce-ntp-wakeups.patch
 Patch414:	0125-init-wait-for-partition-and-retry-scan.patch
 Patch415:	0120-Migrate-some-systemd-defaults-to-the-kernel-defaults.patch
+Patch416:	0121-use-lfence-instead-of-rep-and-nop.patch
+Patch417:	0122-do-accept-in-LIFO-order-for-cache-efficiency.patch
+Patch418:	0123-locking-rwsem-spin-faster.patch
+Patch419:	0124-ata-libahci-ignore-staggered-spin-up.patch
+Patch420:	0131-overload-on-wakeup.patch
 %endif
 
 # (crazy) see: https://forum.openmandriva.org/t/nvme-ssd-m2-not-seen-by-omlx-4-0/2407
