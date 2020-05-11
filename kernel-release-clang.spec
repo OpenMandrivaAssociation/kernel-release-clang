@@ -257,7 +257,6 @@ Patch7:		aacraid-dont-freak-out-dependency-generator.patch
 %if %{with uksm}
 Patch120:	https://raw.githubusercontent.com/dolohow/uksm/master/v5.x/uksm-5.6.patch
 %endif
-
 %if %{with build_modzstd}
 # https://lkml.org/lkml/2020/3/25/991
 Patch126:	v3-1-8-lib-prepare-zstd-for-preboot-environment.patch
@@ -853,11 +852,7 @@ cp %{S:6} %{S:7} %{S:8} %{S:9} %{S:10} %{S:11} %{S:12} %{S:13} kernel/configs/
 xzcat %{SOURCE90} |git apply - || git apply %{SOURCE90}
 rm -rf .git
 %endif
-%if %mdvver > 3000000
 %autopatch -p1
-%else
-%apply_patches
-%endif
 
 # merge SAA716x DVB driver from extra tarball
 sed -i -e '/saa7164/isource "drivers/media/pci/saa716x/Kconfig"' drivers/media/pci/Kconfig

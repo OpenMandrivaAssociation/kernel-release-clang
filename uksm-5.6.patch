@@ -80,7 +80,7 @@ index db17be51b112..0ce4c6303f53 100644
 @@ -1387,6 +1388,7 @@ void setup_new_exec(struct linux_binprm * bprm)
  	/* An exec changes our domain. We are no longer part of the thread
  	   group */
- 	current->self_exec_id++;
+ 	WRITE_ONCE(current->self_exec_id, current->self_exec_id + 1);
 +
  	flush_signal_handlers(current, 0);
  }
@@ -147,7 +147,7 @@ index e48b1e453ff5..095d59310ce0 100644
 +++ b/include/linux/ksm.h
 @@ -1,4 +1,4 @@
 -/* SPDX-License-Identifier: GPL-2.0 */
-+/* SPDX-License-Identifier: GPL-3.0 */
++/* SPDX-License-Identifier: GPL-2.0 */
  #ifndef __LINUX_KSM_H
  #define __LINUX_KSM_H
  /*
