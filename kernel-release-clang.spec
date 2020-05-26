@@ -15,7 +15,7 @@
 # compose tar.xz name and release
 %define kernelversion	5
 %define patchlevel	6
-%define sublevel	13
+%define sublevel	14
 %define relc		%{nil}
 # Only ever wrong on x.0 releases...
 %define previous	%{kernelversion}.%(echo $((%{patchlevel}-1)))
@@ -342,7 +342,6 @@ Patch416:	0121-use-lfence-instead-of-rep-and-nop.patch
 Patch417:	0122-do-accept-in-LIFO-order-for-cache-efficiency.patch
 Patch418:	0123-locking-rwsem-spin-faster.patch
 Patch419:	0124-ata-libahci-ignore-staggered-spin-up.patch
-Patch420:	0131-overload-on-wakeup.patch
 %endif
 
 # (crazy) see: https://forum.openmandriva.org/t/nvme-ssd-m2-not-seen-by-omlx-4-0/2407
