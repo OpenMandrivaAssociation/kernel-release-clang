@@ -1,25 +1,13 @@
-From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
-From: Arjan van de Ven <arjan@linux.intel.com>
-Date: Sat, 8 Dec 2018 18:21:32 +0000
-Subject: [PATCH] use lfence instead of rep and nop
-
----
- arch/x86/include/asm/processor.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
-index 09705cc..2e4e588 100644
---- a/arch/x86/include/asm/processor.h
-+++ b/arch/x86/include/asm/processor.h
-@@ -680,7 +680,7 @@ static inline unsigned int cpuid_edx(unsigned int op)
+diff -up linux-5.7/arch/x86/include/asm/processor.h.41~ linux-5.7/arch/x86/include/asm/processor.h
+diff -up linux-5.7/arch/x86/um/asm/processor.h.41~ linux-5.7/arch/x86/um/asm/processor.h
+--- linux-5.7/arch/x86/um/asm/processor.h.41~	2020-06-04 16:08:38.359215863 +0200
++++ linux-5.7/arch/x86/um/asm/processor.h	2020-06-04 16:08:59.824339370 +0200
+@@ -24,7 +24,7 @@
  /* REP NOP (PAUSE) is a good thing to insert into busy-wait loops. */
  static __always_inline void rep_nop(void)
  {
--	asm volatile("rep; nop" ::: "memory");
-+	asm volatile("lfence" ::: "memory");
+-	__asm__ __volatile__("rep;nop": : :"memory");
++	__asm__ __volatile__("lfence": : :"memory");
  }
  
  static __always_inline void cpu_relax(void)
--- 
-https://clearlinux.org
-

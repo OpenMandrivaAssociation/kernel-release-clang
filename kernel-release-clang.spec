@@ -14,8 +14,8 @@
 # This is the place where you set kernel version i.e 4.5.0
 # compose tar.xz name and release
 %define kernelversion	5
-%define patchlevel	6
-%define sublevel	14
+%define patchlevel	7
+%define sublevel	0
 %define relc		%{nil}
 # Only ever wrong on x.0 releases...
 %define previous	%{kernelversion}.%(echo $((%{patchlevel}-1)))
@@ -249,7 +249,7 @@ Patch7:		aacraid-dont-freak-out-dependency-generator.patch
 # (crazy) each new patch has to be checked for GPL violation on ksm.h
 #  it cannot be re-licensed to GPL3 by random patches.
 %if %{with uksm}
-Patch120:	https://raw.githubusercontent.com/dolohow/uksm/master/v5.x/uksm-5.6.patch
+Patch120:	https://raw.githubusercontent.com/dolohow/uksm/master/v5.x/uksm-5.7.patch
 %endif
 %if %{with build_modzstd}
 # https://lkml.org/lkml/2020/3/25/991
