@@ -388,7 +388,7 @@ Patch900:	ARM-xor-neon-Replace-__GNUC__-checks-with-CONFIG_CC_IS_GCC.patch
 %endif
 %ifarch %{ix86}
 # https://github.com/ClangBuiltLinux/linux/issues/579
-Patch902:	ix86-cant-create-dynamic-relocation-R_386_32-with-LLD.patch
+#Patch902:	ix86-cant-create-dynamic-relocation-R_386_32-with-LLD.patch
 # https://github.com/ClangBuiltLinux/linux/issues/3
 Patch903:	i386-percpu.patch
 %endif
