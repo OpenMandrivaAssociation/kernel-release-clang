@@ -29,7 +29,7 @@
 %define rpmrel		0.rc%{relc}.1
 %define tar_ver   	%{kernelversion}.%{patchlevel}-rc%{relc}
 %else
-%define rpmrel		1
+%define rpmrel		2
 %define tar_ver		%{kernelversion}.%{patchlevel}
 %endif
 %define buildrpmrel	%{rpmrel}%{rpmtag}
@@ -494,8 +494,8 @@ Suggests:	microcode-intel
 # so end users don't have to install compilers (and worse,
 # get compiler error messages on failures)
 %if %{with virtualbox}
-BuildRequires:	virtualbox-kernel-module-sources
-BuildRequires:	virtualbox-guest-kernel-module-sources
+BuildRequires:	virtualbox-kernel-module-sources >= 6.1.10
+BuildRequires:	virtualbox-guest-kernel-module-sources >= 6.1.10
 %endif
 
 %description
