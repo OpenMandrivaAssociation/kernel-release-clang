@@ -3,4 +3,4 @@ sources:
   extra-wifi-drivers-20200301.tar.zst: 3390c738c7d91250714ce0f88d26371e93bc40b8
   linux-5.7.tar.xz: 07e40057b78f1c9dd2b042056325d99fcf9f8a08
   linux-5.7.tar.sign: 9bdcc9e48ee0eca0baa8118b9a10ba2eda64363e
-  patch-5.7.5.xz: eb0fb693bc7fb882d0f01bb00aa5bb300cc9160b
+  patch-5.7.6.xz: 8a9b3bafa34bedf15a67ab8b5fed6b4d033e3bbb
