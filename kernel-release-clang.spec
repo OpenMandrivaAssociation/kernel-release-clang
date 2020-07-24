@@ -494,8 +494,8 @@ Suggests:	microcode-intel
 # so end users don't have to install compilers (and worse,
 # get compiler error messages on failures)
 %if %{with virtualbox}
-BuildRequires:	virtualbox-kernel-module-sources >= 6.1.10
-BuildRequires:	virtualbox-guest-kernel-module-sources >= 6.1.10
+BuildRequires:	virtualbox-kernel-module-sources
+BuildRequires:	virtualbox-guest-kernel-module-sources
 %endif
 
 %description
