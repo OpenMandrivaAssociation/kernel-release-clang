@@ -436,8 +436,8 @@ BuildRequires:	bison
 BuildRequires:	binutils
 BuildRequires:	hostname
 %if %{with clang}
-BuildRequires:	clang
-BuildRequires:	llvm
+BuildRequires:	clang = 10.0.1-0.20200518.1
+BuildRequires:	llvm = 10.0.1-0.20200518.1
 BuildRequires:	lld
 %else
 BuildRequires:	gcc >= 7.2.1_2017.11-3
